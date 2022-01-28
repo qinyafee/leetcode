@@ -19,6 +19,25 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    // 时间复杂度O(n^2)， 空间复杂度O(n)
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> res;
+        if(numRows == 0) return res;
+        res.push_back(vector<int>(1,1)); //i=1,第一行，[1]
+        for(int i = 2; i <= numRows; ++i){
+            vector<int> curr(i,1); //本行，初始化为1
+            // 上一行
+            const vector<int>& prev = res.back();// 或者result[i-2];
+            for(int j = 1; j < i-1; ++j)
+                curr[j] = prev[j-1] + prev[j]; //左上角和右上角之和
+            res.push_back(curr);
+        }
+        return res;
+    }
+};
 
 #include <stdlib.h>
 #include <vector>

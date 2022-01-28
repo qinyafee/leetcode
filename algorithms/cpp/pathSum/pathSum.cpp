@@ -21,6 +21,32 @@
 * return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(root == NULL) return false;
+        if(!root->left && !root->right) return sum == root->val;
+        return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
+    }
+};
+
+---------------
+输入：
+[]
+0
+
+预期结果：
+false
+
+所以下面给行不通
+bool hasPathSum(TreeNode* root, int sum) {
+    if(root == NULL) return sum == 0; //行不通
+    return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
+}
+--------------------
+
+
 
 #include <time.h>
 

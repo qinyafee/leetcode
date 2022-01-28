@@ -17,6 +17,31 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    // hash。 用一个哈希表， 存储每个数对应的下标
+    // Time Complexity: O(n)， Space Complexity: O(n)
+    vector<int> twoSum(vector<int>& nums, int target) {
+        const int n = nums.size();
+        unordered_map<int,int> mp; //<数组元素，下标>
+        vector<int> res;
+        for(int i = 0; i < n; ++i){
+            mp[nums[i]] = i;
+        }
+        for(int i = 0; i < n; ++i){
+            auto it = mp.find(target-nums[i]);
+            if(it != mp.end() && it->second != i){
+                // res.push_back(i+1); //注意+1
+                // res.push_back(it->second+1); //注意+1
+                res.push_back(i);
+                res.push_back(it->second);
+                break;
+            }
+        }
+        return res;
+    }
+};
 
 class Solution {
 public:

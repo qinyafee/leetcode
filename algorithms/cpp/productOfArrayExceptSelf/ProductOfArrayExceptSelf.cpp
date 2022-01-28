@@ -16,6 +16,40 @@
  * count as extra space for the purpose of space complexity analysis.)
  *               
  **********************************************************************************/
+// my implm
+// 两次遍历，一次正向(a[i]前面所有元素乘积)，一次反向(a[i]后面所有元素乘积)。
+class Solution {
+public:
+    //时间O(n)，空间O(1)
+    vector<int> productExceptSelf(vector<int>& nums) {
+        const int n = nums.size();
+        vector<int> res(n, 1);
+        for(int i = 1; i < n; ++i)
+            res[i] = nums[i-1] * res[i-1];
+        
+        int factor = 1;
+        for(int i = n-2; i >= 0; --i){
+            factor *= nums[i+1];
+            res[i] *= factor;
+        }
+        return res;
+    }
+
+    //时间O(n)，空间O(n)
+    vector<int> productExceptSelf2(vector<int>& nums) {
+        const int n = nums.size();
+        vector<int> prev(n, 1);
+        vector<int> tail(n, 1);
+        vector<int> res(n, 1);
+        for(int i = 1; i < n; ++i)
+            prev[i] = nums[i-1] * prev[i-1];
+        for(int i = n-2; i >= 0; --i)
+            tail[i] = nums[i+1] * tail[i+1];
+        for(int i = 0; i < n; ++i)
+            res[i] = prev[i] * tail[i];
+        return res;
+    }
+};
 
 class Solution {
 public:

@@ -20,6 +20,37 @@
 *   1,1,5 → 1,5,1
 *               
 **********************************************************************************/
+//my implm
+// https://leetcode-cn.com/problems/next-permutation/solution/xia-yi-ge-pai-lie-suan-fa-xiang-jie-si-lu-tui-dao-/
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        //std::next_permutation(nums.begin(),nums.end()); //stl
+        const int n = nums.size();
+        if(n < 2) return;
+        //step1 从后往前找到第一个【相邻升序对】，即A[i]<A[i+1]。此时A[i+1,end)为降序。
+        int i = n-2; //注意index
+        for(; i >= 0; --i){
+            if(nums[i] < nums[i+1]) break;
+        }
+
+        //step2 在区间[i+1,end)中，从后往前找到第一个大于A[i]的元素A[j]
+        if(i == -1){ // 特判，无相邻升序对，必定为非递减序列，已经是最大全排列
+            std::reverse(nums.begin(), nums.end());
+            return;
+        }
+        int j = n-1;
+        for(; j >= i+1; --j){
+            if(nums[j] > nums[i]) break;
+        }
+
+        //step3 交换A[i]和A[j]，此时A[i+1,end)一定还是降序，因为A[j]是从右侧起第一个大于A[i]的值
+        swap(nums[i], nums[j]);
+        //step4 反转A[i+1,end)，变成升序
+        std::reverse(nums.begin()+i+1, nums.end());
+        return;
+    }
+};
 
 /*
  * Take a look the following continuous permutation, can you find the patern?

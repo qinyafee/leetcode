@@ -32,8 +32,84 @@
  * Output: 0
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
  ******************************************************************************************************/
+/**
+设状态 f(i)，表示区间[0, i](0 ≤ j ≤ i − 1)的最大利润; 状态 g(i)， 表示区间[i, n − 1](i ≤ j ≤ n − 1)的
+最大利润， 则最终答案为 max(f(i) + g(i)) , 0 ≤ i ≤ n − 1。
+允许在一天内买进又卖出， 相当于不交易， 因为题目的规定是最多两次， 而不是一定要两次。
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return 0;
 
+        const int n = prices.size();
+        vector<int> f(n,0);
+        vector<int> g(n,0);
+        
+        //valley， 当前最小price
+        for(int i = 1, valley = prices[0]; i < n; ++i){
+            // valley = min(valley, prices[i]); //这句放到这里也行
+            f[i] = max(f[i-1], prices[i] - valley);
+            valley = min(valley, prices[i]);
+        }
 
+        //从后往前扫。peak，当前最高price
+        for(int i = n-2, peak = prices[n-1]; i >= 0; --i){
+            // peak = max(peak, prices[i]); //这句放到这里也行
+            g[i] = max(g[i+1], peak - prices[i]);
+            peak = max(peak, prices[i]);
+
+        }
+
+        int total_max = 0;
+        for(int i = 0; i < n; ++i){
+            total_max = max(total_max, f[i]+g[i]);
+        }
+        return total_max;
+    }
+};
+
+//我的原始实现，结果应该正确，但是超时，O(n^2)
+/*
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return 0;
+
+        const int n = prices.size();
+        vector<int> f(n,0);
+        vector<int> g(n,0);
+
+        for(int i = 0; i < n; ++i){
+            int profit_max = 0; //当前最大利润 
+            int price_min = INT_MAX; //当前最小价格             
+            for(int j = 0; j <= i; ++j){
+                profit_max = max(profit_max, prices[j] - price_min);
+                price_min = min(price_min, prices[j]);  
+            }
+            f[i] = profit_max;
+        }
+
+        for(int i = 0; i < n; ++i){
+            int profit_max = 0; //当前最大利润 
+            int price_min = INT_MAX; //当前最小价格 
+
+            for(int j = i+1; j < n; ++j){
+                profit_max = max(profit_max, prices[j] - price_min);
+                price_min = min(price_min, prices[j]);  
+            }
+            g[i] = profit_max;
+        }
+
+        int total_max = 0;
+        for(int i = 0; i < n; ++i){
+            total_max = max(total_max, f[i]+g[i]);
+        }
+        return total_max;
+    }
+
+};
+*/
 class Solution {
 public:
     // Dynamic Programming

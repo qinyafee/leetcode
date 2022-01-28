@@ -81,6 +81,9 @@ int uniquePaths(int m, int n) {
 #include <vector>
 using namespace std;
 
+// use this impl
+// 设状态为 f[i][j] ， 表示从起点 (0,0) 到达 (i,j) 的路线条数，
+// 则状态转移方程为：f[i][j]=f[i-1][j]+f[i][j-1]
 // using C++ STL vector , the code is much easy to read
 int uniquePaths(int m, int n) {
     vector< vector <int> >  dp (n, vector<int>(m, 1));

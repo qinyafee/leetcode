@@ -29,14 +29,18 @@
 
 class Solution {
 public:
+// my implm
+//  将几个单词按照字母顺序排序后， 若它们相等， 则它们属于同一组 anagrams
+class Solution {
+public:
     vector< vector<string> > groupAnagrams(vector<string> &strs) {
         vector< vector<string> > result;
-        map<string, int> m;
+        map<string, int> m; //<word, res vector index>
         for(int i=0; i<strs.size(); i++){
             string word = strs[i];
-            sort(word.begin(), word.end());
+            sort(word.begin(), word.end()); //排序方便对比
             if (m.find(word)==m.end()){
-                vector<string> v;
+                vector<string> v; //新建一个组
                 v.push_back(strs[i]);
                 result.push_back(v);
                 m[word] = result.size()-1;
@@ -46,11 +50,13 @@ public:
             }
         }
         
-        for(int i=0; i<result.size(); i++){
-            sort(result[i].begin(), result[i].end());
-        }
+        //下面多余
+        // for(int i=0; i<result.size(); i++){
+        //     sort(result[i].begin(), result[i].end());
+        // }
         return result;
     }
+};
      
     //using multiset 
     vector< vector<string> > groupAnagrams01(vector<string> &strs) {

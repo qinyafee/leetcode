@@ -18,6 +18,25 @@
 * Credits:Special thanks to @Freezen for adding this problem and creating all test cases.
 *               
 **********************************************************************************/
+// my implm
+// 先将数组分为两段， 前 n-k 个为一段， 后 k 个元素作为第二段。【注意k取模】
+// 将第一段reverse, 第二段reverse, 然后将整个数组reverse, 这样经过三轮reverse，就完成了循环右移。
+// 时间复杂度 O(n)， 空间复杂度 O(1) 
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        const int n = nums.size();
+        k = k % n; //注意
+        myReverse(nums, 0, n-k-1);
+        myReverse(nums, n-k, n-1);
+        myReverse(nums, 0, n-1);
+    }
+    void myReverse(vector<int>& nums, int start, int end){
+        while(start < end){
+            std::swap(nums[start++], nums[end--]);
+        }
+    }
+};
 
 #include <stdlib.h>
 #include <time.h>

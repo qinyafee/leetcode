@@ -40,7 +40,7 @@ public:
             if(maps[s[i]] == 0 && mapt[t[i]] == 0){
                 maps[s[i]] = t[i];
                 mapt[t[i]] = s[i];
-                continue;
+                //continue;
             }
             if(maps[s[i]] == t[i] && mapt[t[i]] == s[i]) {
                 continue;

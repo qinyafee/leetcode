@@ -31,6 +31,33 @@ using namespace std;
 class Solution {
     
 public:
+    //my impl 1
+    //space O(1)
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        for(int i = n-2; i >= 0; --i){
+            for (int j = 0; j <= i; ++j) //j < i + 1;
+                triangle[i][j] = 
+                    min(triangle[i+1][j], triangle[i+1][j+1]) +triangle[i][j];
+        }
+        return triangle[0][0];
+    }
+    //my impl 2
+    //space:O(n^2)
+    int minimumTotal2(vector<vector<int>>& triangle) {
+        const int N = triangle.size();
+        vector<vector<int> > dp(N, vector<int>(N,0));
+        for(int i = N-1; i >= 0; --i){
+            dp[N-1][i] = triangle[N-1][i];
+        }
+        for(int i = N-2; i >= 0; --i){
+            for(int j = i; j >= 0; --j){
+                dp[i][j] = min(dp[i+1][j], dp[i+1][j+1]) + triangle[i][j];
+            }
+        }
+        return dp[0][0];
+    }
+
     int minimumTotal(vector<vector<int> > &triangle) {
         vector< vector<int> > v;
         

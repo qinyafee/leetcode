@@ -75,6 +75,8 @@
  * 
  */
 
+// 将辅助矩阵 f[i][j] 的行数和列数增1， 可以简化对矩阵边界的处理。
+// 第一行和第一列全是0，不用初始化
 class NumMatrix {
 private:
     int row, col;

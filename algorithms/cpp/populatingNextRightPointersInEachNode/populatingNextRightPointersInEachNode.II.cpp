@@ -30,6 +30,36 @@
 *               
 **********************************************************************************/
 
+
+// 迭代
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+public:
+    Node* connect(Node* root) { //算法珠机里，返回void
+        helper(root);
+        return root;
+    }
+
+    void helper(Node* root){
+        if(root == NULL) return;
+
+        //怎么得到每次的开头的节点呢？我们用一个dummy指针
+        Node dummy(-1);
+        
+        for(Node* curr = root, *prev = &dummy; curr; curr = curr->next){
+            if(curr->left != NULL){
+                prev->next = curr->left;
+                prev = prev->next;
+            }
+            if(curr->right != NULL){
+                prev->next = curr->right;
+                prev = prev->next;
+            }
+        }
+        helper(dummy.next);
+    }
+};
+
 #include <stdio.h>
 #include <vector>
 #include <queue>

@@ -20,6 +20,28 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+// 错误想法：将整数反转，然后与原来的整数比较，是否相等，相等则为Palindrome的。可是reverse()会溢出。
+// 正确解法：不断地取第一位和最后一位（10进制下）进行比较，相等则取第二位和倒数第二位，直到
+// 完成比较或者中途找到了不一致的位。
+class Solution {
+public:
+    // 时间复杂度O(1)， 空间复杂度O(1)
+    bool isPalindrome(int x) {
+        if(x<0) return false;
+        int d = 1; //divisor
+        while(x/d >= 10) d *= 10; //d，找到最高位数目
+        while(x > 0){
+            int q = x/d; // quotient，商，最高位的数值
+            int r = x%10; // remainder, 余数，最低位的数值
+            if(q != r) return false;
+            x = x%d; //余数，[第二位，最后一位]
+            x /= 10; //商数，[第二位，倒数第二位]
+            d /= 100;//每此循环消去两位
+        }
+        return true;
+    }
+};
 
 #include <stdio.h>
 

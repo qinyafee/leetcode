@@ -16,6 +16,29 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+//折线图
+// https://leetcode-cn.com/problems/gas-station/solution/shi-yong-tu-de-si-xiang-fen-xi-gai-wen-ti-by-cyayc/
+class Solution {
+public:
+    // 时间O(n)
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        const int n = gas.size();
+        int globalSpare = 0; //全局剩余油量
+        int minSpare = INT_MAX; //剩余油量最低点
+        int minId = 0;
+        for(int i = 0; i < n; ++i){
+            // minSpare += gas[i] - cost[i];
+            globalSpare += gas[i] - cost[i];
+            if(globalSpare < minSpare){
+                minId = i;
+                minSpare = globalSpare;
+            }
+        }
+        // 从最低点的下一站出发！！！
+        return globalSpare >=0 ? (minId+1)%n : -1;
+    }
+};
 
 class Solution {
 public:

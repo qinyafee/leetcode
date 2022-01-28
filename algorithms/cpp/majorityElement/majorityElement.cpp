@@ -12,13 +12,28 @@
  *               
  **********************************************************************************/
 
+// my implm
+// 哈希表，哈希表来快速统计每个元素出现的次数，复杂度也是o(n).
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int, int> mp; //<元素，个数>
+        int i = 0;
+        for(; i < nums.size(); ++i){
+            ++mp[nums[i]];
+            if(mp[nums[i]] > nums.size()/2)
+                break;
+        }
+        return nums[i];
+    }
+};
+
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <sstream>
 using namespace std;
-
 
 // Moore Voting Algorithm
 // Refer to: 

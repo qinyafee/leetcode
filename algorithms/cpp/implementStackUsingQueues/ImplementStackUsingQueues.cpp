@@ -33,7 +33,49 @@
  *               
  **********************************************************************************/
 
+// 我的实现
+// 只用一个queue。
+// push()没变化
+// pop()前，循环将队首元素压入 queue，然后再pop出队首元素 
+// top(), 返回que.back();
+class MyStack {
+public:
+    /** Initialize your data structure here. */
+    MyStack() = default;
+    
+    /** Push element x onto stack. */
+    void push(int x) {
+        que.push(x);
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        if(que.empty()) return INT_MIN; //异常处理
+        int n = que.size();
+        for (int i = 0; i < n-1; ++i) {
+            que.push(que.front());
+            que.pop();
+        }
+        int val = que.front();//top();
+        que.pop();
+        return val;
+    }
+    
+    /** Get the top element. */
+    int top() {
+        return que.back();
+    }
+    
+    /** Returns whether the stack is empty. */
+    bool empty() {
+        return que.empty();
+    }
 
+private:
+    queue<int> que;
+};
+
+/* test 有问题
 class Stack {
     public:
         // Push element x onto stack.
@@ -64,3 +106,4 @@ class Stack {
     private:
         queue<int> nums;
 };
+*/

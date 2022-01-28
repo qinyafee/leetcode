@@ -10,6 +10,19 @@
 * down to the farthest leaf node.
 *               
 **********************************************************************************/
+//我的实现
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == NULL) return 0;
+        if(root->left == NULL && root->right == NULL) return 1;
+        int m1 = maxDepth(root->left);
+        int m2 = maxDepth(root->right);
+        //if(root->left == NULL || root->right == NULL) return m1 +m2 +1;
+        return max(m1, m2) + 1;
+        
+    }
+};
 
 /**
  * Definition for binary tree

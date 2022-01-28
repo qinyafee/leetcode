@@ -31,6 +31,45 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
+// my implm
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        ListNode dummy1(-1); //(-1, head);
+        ListNode* p1 = &dummy1;
+        ListNode dummy2(-1); //(-1, head);
+        ListNode* p2 = &dummy2;
+        ListNode* curr = head;
+
+        int i = 0;
+        while(curr){
+            if(!(i%2)) { //奇数节点
+                p1->next = curr;
+                p1 = curr;
+                curr = curr->next;
+                p1->next = nullptr;
+                ++i;                
+            }
+            else { //偶数节点
+                p2->next = curr;
+                p2 = curr;
+                curr = curr->next;
+                p2->next = nullptr;// 必须在此处断开，否则偶数的test case会产生环。
+                ++i;
+            }
+            // ++i;
+            // curr = curr->next;
+        }
+
+        p1->next = dummy2.next;
+
+        return dummy1.next;
+        //p1; 3
+        //p2; 2,3
+    }
+};
+
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {

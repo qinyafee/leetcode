@@ -35,6 +35,21 @@
 * the next node of a pre-order traversal.
 *               
 **********************************************************************************/
+//别人的实现
+// 递归版1， 时间复杂度O(n)， 空间复杂度O(logn)
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        helper(root, NULL);
+    }
+    // 把root所代表树变成链表后， tail跟在该链表后面
+    TreeNode* helper(TreeNode* root, TreeNode* tail){
+        if(root == NULL) return tail;
+        root->right= helper(root->left, helper(root->right, tail));
+        root->left = NULL;
+        return root;
+    }
+};
 
 /**
  * Definition for binary tree

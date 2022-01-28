@@ -18,9 +18,37 @@
  * Credits:Special thanks to @Freezen for adding this problem and creating all test cases.
  *               
  **********************************************************************************/
-
-
+// my impl， 两边动态规划
+// dp[i] 为到位置 i 时能抢到的金钱最大和
+// dp[i] = max(dp[i-1], dp[i-2]+a[i])
 class Solution {
+public:
+    int rob(vector<int>& nums) {
+        const int n = nums.size();
+        if(n == 0) return 0;
+        if(n == 1) return nums[0]; //此条容易忘记
+        if(n <= 2) return max(nums[0],nums[1]);
+
+        //可以不用dp数组，优化到空间O(1)
+        vector<int> dp1(n-1,0); //[0,n-2]区间
+        vector<int> dp2(n-1,0); //[1,n-1]
+        dp1[0] = nums[0];
+        dp1[1] = max(nums[0],nums[1]);
+        dp2[0] = nums[1];
+        dp2[1] = max(nums[1],nums[2]);        
+
+        for(int i = 2; i < n-1; ++i){
+            dp1[i] = max(dp1[i-1], dp1[i-2]+nums[i]);
+        }
+
+        for(int i = 2; i < n-1; ++i){
+            dp2[i] = max(dp2[i-1], dp2[i-2]+nums[i+1]);/** 注意是nums[i+1] */
+        }
+        return max(dp1[n-2], dp2[n-2]);
+    }
+};
+
+class Solution2 {
 public:
     int orginal_rob(vector<int> &money, int start, int end) {
         int n2=0; 

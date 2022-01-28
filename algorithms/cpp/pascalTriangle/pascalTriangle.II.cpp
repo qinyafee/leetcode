@@ -14,6 +14,22 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+// 杨辉三角，是二项式系数在三角形中的一种几何排列。
+// 时间复杂度：O(row^2)，空间复杂度：O(1)。不考虑返回值的空间占用。
+// https://leetcode-cn.com/problems/pascals-triangle-ii/solution/yang-hui-san-jiao-ii-by-leetcode-solutio-shuk/
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> row(rowIndex+1, 0); //注意+1
+        row[0]=1;
+
+        for (int i=0; i<rowIndex; i++) //左到右
+            for(int j=i+1; j>0; j--)
+                row[j] += row[j-1];
+        return row;
+    }
+};
 
 #include <stdlib.h>
 #include <vector>

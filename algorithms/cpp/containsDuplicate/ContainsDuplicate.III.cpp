@@ -9,8 +9,27 @@
  * the difference between i and j is at most k.
  *               
  **********************************************************************************/
-
-
+// my implm
+// 维护k大小的bst，找到|nums[j]-num[i]|<=t
+// https://leetcode-cn.com/problems/contains-duplicate-iii/solution/jian-dan-yi-dong-de-cjie-fa-by-zhu-que-3-4p53/
+class Solution {
+public:
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+        // 活动窗口
+        set<long> st; // long 防溢出
+        for(int i=0; i<nums.size(); ++i){
+            // 找到nums[j]>=nums[i]-t的数中最小的数
+            auto j = st.lower_bound(long(nums[i])-t); 
+            // |nums[j]-num[i]|<=t 推导得 i-t <= j <= i+t
+            if(j != st.end() && *j <= long(nums[i])+t)
+                return true;
+            st.insert(nums[i]);
+            if(st.size() > k)
+                st.erase(nums[i-k]); //删除滑窗第一个元素
+        }
+        return false;
+    }
+};
 
 class Solution {
 public:

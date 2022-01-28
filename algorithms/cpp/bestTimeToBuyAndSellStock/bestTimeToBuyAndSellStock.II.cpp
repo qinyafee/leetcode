@@ -33,6 +33,20 @@
  * Output: 0
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
  ******************************************************************************************************/
+//my
+class Solution {
+public:
+    //贪心法， 低进高出， 把所有正的价格差价相加起来。
+    int maxProfit(vector<int>& prices) {
+        int diff;
+        int sum = 0;
+        for (int i = 1; i < prices.size(); i++) {
+            int diff = prices[i] - prices[i - 1];
+            if (diff > 0) sum += diff;
+        }
+        return sum;
+    }
+};
 
 class Solution {
 public:

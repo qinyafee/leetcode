@@ -30,6 +30,47 @@
  *               
  **********************************************************************************/
 
+//my impl
+// 时间复杂度：O(n+m)。
+// 空间复杂度：O(1)
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+      int rows = matrix.size();
+      if(rows==0)
+          return false;
+      int cols = matrix[0].size();
+      if(cols==0) // 空数组无法通过
+          return false;      
+       
+      //左下角
+      int i = rows - 1; 
+      int j = 0;
+      while(i >=0 && j < cols){
+        if(matrix[i][j] > target)
+            --i;
+        else if(matrix[i][j] < target)
+            ++j;
+        else
+            return true;
+      }
+      return false;
+    }
+
+      
+      //右上角
+/*      int i = 0; 
+      int j = cols - 1;
+      while(i <rows && j >=0){
+        if(matrix[i][j] > target)
+            --j;
+        else if(matrix[i][j] < target)
+            ++i;
+        else
+            return true;
+      }
+      return false;*/    
+};
 
 class Solution {
 public:

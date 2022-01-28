@@ -3,7 +3,7 @@
 // Date   : 2015-11-06
 
 /*************************************************************************************** 
- *
+ * 300. 最长上升子序列
  * Given an unsorted array of integers, find the length of longest increasing
  * subsequence.
  *
@@ -21,11 +21,70 @@
  * Special thanks to @pbrother for adding this problem and creating all test cases.
  *               
  ***************************************************************************************/
+//my impl
+// 时间复杂度O(nlogn)， 空间复杂度O(n)
+class Solution {
+public:
+    // 时间复杂度O(nlogn)， 空间复杂度O(n)
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> res;
+        for(int i = 0; i < nums.size(); ++i){
+            int insertPos = lower_bound(res, 0, res.size(), nums[i]);//为何不是res.size()-1
+        
+            if(insertPos == res.size()) //没找到的判读
+                res.push_back(nums[i]);
+            else
+                res[insertPos] = nums[i];
+        }
+        return res.size();
+    }
 
+    int lower_bound(vector<int> arr, int first, int last, int target){
+        while(first < last){
+            int mid = first + (last - first)/2;
+            if(target > arr[mid]) first = ++mid; //要找的是 lower_bound >=target 
+            else last = mid;
+        }
+        return first;
+    }
+
+    //用stl
+    int lengthOfLIS2(vector<int>& nums) {
+        vector<int> res;
+        for(int i = 0; i < nums.size(); ++i){
+            //int insertPos = lower_bound(res, 0, res.size(), nums[i]);
+            auto insertPos = std::lower_bound(res.begin(), res.end(), nums[i]);
+            //int pos = insertPos- v.begin();
+            if(insertPos == res.end()) //没找到的判读
+                res.push_back(nums[i]);
+            else
+                //res[insertPos] = nums[i];
+                *insertPos = nums[i];
+        }
+        return res.size();
+    }
+    //用stl2
+    int lengthOfLIS3(vector<int>& nums) {
+        if(nums.size()==0) return 0;
+
+        vector<int> f;
+        f.push_back(nums[0]);
+
+        for(int i =1; i < nums.size(); ++i){
+            if(nums[i]>f.back())
+                f.push_back(nums[i]);
+            else{
+                auto it = std::lower_bound(f.begin(), f.end(), nums[i]);
+                if(it != f.end()) *it = nums[i];
+            }
+        }
+        return f.size();
+    }
+};
 
 
 // O(n^2) - dynamic programming
-class Solution {
+class Solution2 {
 public:
     int lengthOfLIS(vector<int>& nums) {
         

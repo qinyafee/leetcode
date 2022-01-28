@@ -20,6 +20,48 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+
+// 先排序，然后左右夹逼，复杂度 O(n^2)。
+// 这个方法可以推广到 k-sum ， 先排序， 然后做 k-2 次循环， 在最内层循环左右夹逼， 时间复杂度是 O(max{nlog n, n^(k-1) })。
+// 本题的难点在于如何去除重复解。
+//https://leetcode-cn.com/problems/3sum/solution/pai-xu-shuang-zhi-zhen-zhu-xing-jie-shi-python3-by/
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        const int n = nums.size();
+        vector<vector<int>> res;
+        if(n < 3) return res;
+        sort(nums.begin(), nums.end());
+        auto last = nums.end();
+        for(auto i = nums.begin(); i < last-2; ++i){
+            if(*i>0) return res; //已排序，后面不会有解
+            if(i> nums.begin() && *i == *(i-1)) continue; //去重复
+            auto left = i+1;
+            auto right = last-1;
+            while(left < right){
+                if(*i + *left + *right == 0){
+                    res.push_back({*i, *left, *right});
+                    ++left; //找下一个解
+                    --right; //找下一个解
+                    while(*left == *(left-1) && left < right) ++left;//去重复
+                    while(*right == *(right+1) && left < right) --right;//去重复
+
+                }
+                else if(*i + *left + *right < 0){
+                    ++left;
+                    // while(*left == *(left+1) && left < right) ++left;//去重复
+                }
+                else{
+                    --right;
+                    // while(*right == *(right-1) && left < right) --right;//去重复
+                }
+            }
+        }
+        return res;
+    }
+};
 
 #include <stdio.h>
 #include <iostream>

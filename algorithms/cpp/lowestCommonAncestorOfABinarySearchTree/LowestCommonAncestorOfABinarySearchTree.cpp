@@ -26,6 +26,24 @@
  *               
  **********************************************************************************/
 
+// my implm
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // 1. 两个子节点都在树的左子树上，需递归到左子树上
+        if(root->val > p->val && root->val > q->val) 
+            return lowestCommonAncestor(root->left, p, q);
+        // 2. 两个子节点都在树的右子树上，需递归到右子树上
+        if(root->val < p->val && root->val < q->val) 
+            return lowestCommonAncestor(root->right, p, q);
+        
+        // // 3. 一个子节点在左子树， 一个子节点在右子树，当前节点即为最近公共祖先
+        // if(root->val > p->val && root->val < q->val) return root;
+        // // 4. 一个子节点的值和根节点的值相等，当前节点即为最近公共祖先
+        // if(root->val == p->val || root->val == q->val) return root;
+        return root;
+    }
+};
 
 /**
  * Definition for a binary tree node.
@@ -43,11 +61,11 @@ public:
         while(root) {
             if (p->val > root->val && q->val > root->val) {
                 root = root->right;
-                continue;
+                continue;//跳出当前循环，继续下一次循环
             }
             if (p->val < root->val && q->val < root->val) {
                 root = root->left;
-                continue;
+                continue;//跳出当前循环，继续下一次循环
             }
             return root;
             

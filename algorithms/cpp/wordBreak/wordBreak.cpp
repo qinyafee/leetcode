@@ -15,6 +15,35 @@
 * 
 *               
 **********************************************************************************/
+//my implm
+
+//设状态为 f(i) ， 表示 s[0,i) 是否可以分词， 则状态转移方程为
+// f(i) = any_of(f(j) && s[j,i] in dict), 0 <= j < i。只要满足就true
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        const int n = s.size();
+        if(n==0) return true;
+        vector<bool> f(n+1,false);
+        f[0] = true; /** 空字符串*/
+        for(int i = 1; i <= n; ++i) /** 注意<=*/
+            for(int j = i-1; j >= 0; --j)
+                // if(f[j] && wordDictSet.find(s.substr(j,i-j))!= wordDict.end())
+                if(f[j]){
+                    //字典中查找
+                    int k = 0;
+                    for (;k < wordDict.size(); ++k)
+                        if(s.substr(j,i-j) == wordDict[k]) //substr(pos,len)
+                            break;
+                    if (k != wordDict.size()){ //找到了
+                        f[i]=true;
+                        break;
+                    }
+
+                }
+        return f[n];
+    }
+};
 
 #include <iostream>
 #include <vector>

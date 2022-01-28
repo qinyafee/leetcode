@@ -9,7 +9,24 @@
  * and it should return false if every element is distinct.
  *               
  **********************************************************************************/
-
+//my implm
+// 方法1，用一个HashSet,不断往里面塞元素，如果发现有重复，说明存在重复。
+// 时间复杂度O(n)，空间复杂度O(n)。
+// 方法2，排序，然后从头到尾扫描，如果发现相邻两个元素相等，则存在重复。
+// 时间复杂度O(nlogn)，空间复杂度O(1)。
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> st;
+        for(auto x : nums){
+            if(st.find(x) == st.end())
+                st.insert(x);
+            else
+                return true;
+        }
+        return false;
+    }
+};
 
 class Solution {
 public:

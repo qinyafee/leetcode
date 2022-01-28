@@ -9,6 +9,24 @@
 * The digits are stored such that the most significant digit is at the head of the list.
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        const int n = digits.size();
+        vector<int> res;
+        int carry = 1;
+        for(int i = n-1; i >= 0; --i){
+            digits[i] += carry;
+            // res.push_back(digits[i] % 10);//wrong
+            res.insert(v.begin(), digits[i]%10);
+            carry = digits[i] / 10;;
+        }
+        if(carry > 0)  res.insert(res.begin(), carry);
+        return res;
+    }
+};
+
 
 #include <iostream>
 #include <vector>

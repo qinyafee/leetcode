@@ -18,6 +18,40 @@
 *               
 **********************************************************************************/
 
+// my impl
+class Solution {
+public:
+    //设状态为 f[i]， 表示以 a[i] 结尾的最大连续子序列和
+
+    // 时间复杂度O(n)， 空间复杂度O(1)
+    int maxSubArray(vector<int>& nums) {
+        const int N = nums.size();
+        if(N==0) return 0;
+        int localmax = nums[0];
+        int globalmax = nums[0];
+
+        for(int i = 1; i < N; ++i){
+            localmax = max(localmax, 0) + nums[i];
+            globalmax = max(globalmax, localmax);
+        }
+        return globalmax;
+    }
+
+    // 时间复杂度O(n)， 空间复杂度O(n)
+    int maxSubArray2(vector<int>& nums) {
+        const int N = nums.size();
+        if(N==0) return 0;
+        vector<int> f(N,0);
+        f[0]=nums[0]; //此处易错，不能是f[0]=0；
+        int res = f[0];
+        for(int i = 1; i < N; ++i){
+            f[i] = max(f[i-1], 0) + nums[i];
+            res = max(res, f[i]);
+        }
+        return res;
+    }
+};
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

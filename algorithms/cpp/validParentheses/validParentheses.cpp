@@ -18,6 +18,28 @@
 #include <stack>
 using namespace std;
 
+// my impl
+class Solution {
+public:
+    bool isValid(string& s) {
+
+        stack<char> stk;
+        string left = "({[";
+        string right = ")}]";
+        for(auto ch: s){
+            if(left.find(ch)!= string::npos)
+                stk.push(ch);
+            else {
+                if(stk.empty()||stk.top()!=left[right.find(ch)])
+                    return false;
+                else stk.pop();
+            }
+        }
+        return stk.empty();
+
+    }
+};
+
 bool isValid(string s) {
     stack<char> st;
     for(auto ch : s) {

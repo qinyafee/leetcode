@@ -12,6 +12,31 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+// 双指针：
+// 如果相等，prev不动，curr向前走
+// 如果不等，两个都向前走
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(!head || !head->next) return head;
+        ListNode* p1, *p2; //第二个* 容易忘
+        p1=head;
+        p2=head->next;
+        while(p2){
+            if(p1->val == p2->val) {// p1不动，p2向前走
+                p1->next = p2->next;
+                ListNode* tmp = p2;
+                p2 = p2->next;
+                delete tmp; //容易忘，释放内存
+            } else { // p1、p2都向前走
+                p1 = p2;
+                p2 = p2->next;
+            }
+        }
+        return head;
+    }
+};
 
 #include <stdio.h>
 

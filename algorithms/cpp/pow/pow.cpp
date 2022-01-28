@@ -36,6 +36,26 @@
  *            if `n` is an odd number, we can just `result *= x;`
  *
  */
+
+//my
+class Solution {
+public:
+    double myPow(double x, int b) {
+        // if(abs(x-1.0) < 0.0000001) return 1.0;
+        // if(abs(x) < 0.0000001) return 0.0;
+        long n = b; //否则-2147483648会出错
+        if(n < 0) return 1.0/ power(x, -n);
+        else return power(x, n);
+    }
+
+    double power(double x, int n){
+        if(n == 0) return 1;
+        double v = power(x, n/2);
+        if(n % 2 == 0) return v*v;
+        else return v*v*x;
+    }
+};
+
 double pow(double x, int n) {
 
     bool sign = false;

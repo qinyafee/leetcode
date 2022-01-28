@@ -28,6 +28,68 @@
  *               
  **********************************************************************************/
 
+/** 我的实现
+ * 入队push时，将元素压入s1。
+ * 出队/peek时，判断s2是否为空，如不为空，则直接弹出顶元素；如为空，则将s1的元素逐个“倒入”s2，把最后一个元素弹出并出队。
+*/
+class MyQueue {
+public:
+    /** Initialize your data structure here. */
+    MyQueue() {
+
+    }
+    stack<int> stk1, stk2;
+    /** Push element x to the back of queue. */
+    void push(int x) {
+        stk1.push(x);
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    int pop() {
+        //考虑异常
+        if(stk1.empty() && stk2.empty()) return INT_MIN;
+        if(stk2.empty()){
+            while(!stk1.empty()){
+                stk2.push(stk1.top());
+                stk1.pop();
+            }
+        }
+        int x = stk2.top();
+        stk2.pop();
+        return x;
+
+    }
+    
+    /** Get the front element. */
+    int peek() {
+        //考虑异常
+        if(stk1.empty() && stk2.empty()) return INT_MIN;        
+        if(stk2.empty()){
+            while(!stk1.empty()){
+                stk2.push(stk1.top());
+                stk1.pop();
+            }
+        }
+        return stk2.top();
+    }
+    
+    /** Returns whether the queue is empty. */
+    bool empty() {
+        return stk1.empty() && stk2.empty(); //二者均为空，则空
+    }
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */
+
+
+
 class Queue {
 public:
     // Push element x to the back of queue.

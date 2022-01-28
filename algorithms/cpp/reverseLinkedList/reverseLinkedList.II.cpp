@@ -17,6 +17,22 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev=NULL ;
+        ListNode* cur = head;
+        ListNode* tail=NULL;
+        while(cur != NULL){
+            tail = cur->next;//设置下一个节点
+            cur->next = prev;//当前节点指向上一个节点，反转
+            prev = cur;//上一个节点设置成当前节点
+            cur = tail;//处理下一个节点  
+        }
+        return prev;
+    }
+};
 
 #include <stdio.h>
 #include <stdlib.h>

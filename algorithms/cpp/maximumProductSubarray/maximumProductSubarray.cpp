@@ -22,6 +22,27 @@
 *   Output:   80  // The subarray is {-2, -40}
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    // 时间复杂度O(n)， 空间复杂度O(1)
+    int maxProduct(vector<int>& nums) {
+        const int N = nums.size();
+        if(N==0) return 0;
+
+        int ma = nums[0]; //local max
+        int mi = nums[0]; // local min
+        int global = nums[0];
+        for(int i = 1; i < N; ++i){
+            int temp = ma; /** 易错点！！必须用temp*/
+            ma = max(max(ma*nums[i], nums[i]), mi*nums[i]);
+            mi = min(min(temp*nums[i], nums[i]), mi*nums[i]);
+            global = max(global, ma);
+        }
+
+        return global;
+    }
+};
 
 #include <iostream>
 #include <algorithm>

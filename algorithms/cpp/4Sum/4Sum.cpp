@@ -21,6 +21,46 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+// 使用四个指针(a<b<c<d)。固定最小的a和b在左边，c=b+1,d=N-1 移动两个指针包夹求解。
+// 保存使得nums[a]+nums[b]+nums[c]+nums[d]==target的解。偏大时d左移，偏小时c右移。c和d相遇时，表示以当前的a和b为最小值的解已经全部求得。b++,进入下一轮循环b循环。当b循环结束后， a++，进入下一轮a循环。即(a在最外层循环，里面嵌套b循环，再嵌套双指针c,d包夹求解)。
+//https://leetcode-cn.com/problems/4sum/solution/shuang-zhi-zhen-jie-fa-can-zhao-san-shu-zhi-he-ge-/
+
+class Solution{
+	public: 
+    //time: O(n^3)
+	vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        vector<vector<int> > res;
+        if(nums.size()<4)
+        return res;
+        int a,b,c,d,N=nums.size();
+        for(a=0;a<=N-4;a++){
+        	if(a>0&&nums[a]==nums[a-1]) continue;      //确保nums[a] 改变了
+        	for(b=a+1;b<=N-3;b++){
+        		if(b>a+1&&nums[b]==nums[b-1])continue;   //确保nums[b] 改变了
+        		c=b+1,d=N-1;
+        		while(c<d){
+        			if(nums[a]+nums[b]+nums[c]+nums[d]<target)
+        			    c++;
+        			else if(nums[a]+nums[b]+nums[c]+nums[d]>target)
+        			    d--;
+        			else{
+        				res.push_back({nums[a],nums[b],nums[c],nums[d]});
+        				while(c<d&&nums[c+1]==nums[c])      //确保nums[c] 改变了
+        				    c++;
+        				while(c<d&&nums[d-1]==nums[d])      //确保nums[d] 改变了
+        				    d--;
+        				c++;
+        				d--;
+					}
+				}
+			}
+		}
+		return res;
+    }
+};
+
 
 #include <iostream>
 #include <vector>

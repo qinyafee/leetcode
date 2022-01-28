@@ -38,6 +38,16 @@
  */
 class Solution {
 public:
+    //我的实现
+    TreeNode* invertTree(TreeNode* root) {
+        if(!root) return root;
+        TreeNode* tmp = root->left;
+        root->left = invertTree(root->right);
+        root->right = invertTree(tmp);
+        return root;
+    }
+
+
 
     TreeNode* invertTree_recursive(TreeNode* root) {
         if (root==NULL) return root;

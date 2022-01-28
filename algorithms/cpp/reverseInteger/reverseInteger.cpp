@@ -24,6 +24,27 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+// 时间复杂度O(logn)， 空间复杂度O(1)
+// 考虑 1.负数的情况 2. 溢出的情况(正溢出&&负溢出， 比如 x = -2147483648(即-2^31) )
+class Solution {
+public:
+    int reverse(int x) {
+        long long r = 0; //residual
+        long long t = x; //temp，不改变x
+        t = t>0 ? t : -t;
+        for(; t; t /= 10) //每次消除一个低位
+            r = r*10 + t%10;
+        bool sign = x>0 ? false : true; //true代表负数
+        // 如果反转后整数超过32位有符号整数的范围[-2^31, 2^31-1]，就返回 0。
+        if(r > 2147483647 || (sign && r > 2147483648))
+            return 0;
+        if(sign)
+            return -r;
+        else
+            return r;
+    }
+};
 
 #include <stdio.h>
 #include <stdlib.h>

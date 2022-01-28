@@ -26,6 +26,24 @@
  * 
  ******************************************************************************************************/
 
+//my
+// 贪心法， 分别找到价格最低和最高的一天， 低进高出， 注意最低的一天要在最高的一天之前。
+// 把原始价格序列变成差分序列， 本题也可以做是最大 m 子段和， m=1 。
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return 0;
+        int profit_max = 0; //当前最大利润 
+        int price_min = INT_MAX; //当前最小价格 
+        
+        for(auto x : prices){
+            profit_max = max(profit_max, x - price_min);
+            price_min = min(price_min, x);  
+        }
+        return profit_max;
+    }
+};
+
 class Solution {
 public:
     //

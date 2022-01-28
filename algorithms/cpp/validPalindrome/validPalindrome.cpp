@@ -17,6 +17,42 @@
 * 
 *               
 **********************************************************************************/
+// my implm
+class Solution {
+public:
+    // 时间复杂度O(n)， 空间复杂度O(1)
+    bool isPalindrome(string s) {
+        transform(s.begin(), s.end(), s.begin(), ::tolower); //字母全转成小写
+        auto left = s.begin();
+        auto right = std::prev(s.end()); //s最后一个元素
+        while(left < right){
+            if(!std::isalnum(*left)) ++left;
+            else if(!std::isalnum(*right)) --right;
+            else if(*left != *right) return false;
+            else{ ++left, --right;}
+        }
+        return true;
+    }
+
+    // 时间复杂度O(n)， 空间复杂度O(n)
+    bool isPalindrome2(string s) {
+        vector<char> vec;
+        stack<char> stk;
+        transform(s.begin(), s.end(), s.begin(), ::tolower); //字母全转成小写
+        for(char ch : s){
+            if(std::isalnum(ch)) { //是否为数字和字符
+                vec.push_back(ch);
+                stk.push(ch);
+            }
+        }
+        for(char ch: vec){
+            if(stk.top()==ch) stk.pop();
+            else return false;
+        }
+        return true;
+    }
+};
+
 
 class Solution {
 public:

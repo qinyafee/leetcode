@@ -14,6 +14,32 @@
 * 
 *               
 **********************************************************************************/
+// my impl
+// 先排序， 然后左右夹逼， 复杂度 O(n^2)。
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        // if(nums.size() < 3) return
+        int res = 0;
+        int min_gap = INT_MAX;
+        sort(nums.begin(), nums.end()); //先排序
+        for(auto i = nums.begin(); i < prev(nums.end(),2); ++i){//i<倒数第二个
+            auto left = next(i);
+            auto right = prev(nums.end());          
+            while(left < right){
+                const int sum = *i+*left+*right;
+                const int gap = abs(sum - target);
+                if(gap < min_gap){
+                    res = sum;
+                    min_gap = gap;
+                }
+                if(sum < target) ++left;
+                else --right;
+            }
+        }
+        return res;
+    }
+};
 
 #include <stdio.h>
 #include <stdlib.h>

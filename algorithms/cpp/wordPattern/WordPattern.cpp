@@ -23,25 +23,10 @@
  * cases.
  *               
  ***************************************************************************************/
-
+// my implm
+// 用两个HashMap,记录从字符到字符串和字符串到字符的映射。
 class Solution {
-
-private::
-
-    vector<string> split(string str, char delimiter) {
-        vector<string> internal;
-        stringstream ss(str); // Turn the string into a stream.
-        string tok;
-        
-        while(getline(ss, tok, delimiter)) {
-            internal.push_back(tok);
-        }
-        
-        return internal;
-    }
-
 public:
-    
     bool wordPattern(string pattern, string str) {
         unordered_map<char, string> dict_pattern;
         unordered_map<string, char> dict_string;
@@ -58,17 +43,28 @@ public:
             if ( dict_pattern.find(ch) == dict_pattern.end() ) {
                 dict_pattern[ch] = s;
             }
-            
             if ( dict_string.find(s) == dict_string.end() ) {
                 dict_string[s] = ch;
             }
-            
             if ( dict_pattern[ch] != s || dict_string[s] != ch ) {
                 return false;
             }
-            
         }
         return true;
     }
+
+private:
+    vector<string> split(string str, char delimiter) {
+        vector<string> internal;
+        stringstream ss(str); // Turn the string into a stream.
+        string tok;
+        
+        while(getline(ss, tok, delimiter)) { //istream& getline (istream& is, string& str, char delim);
+            internal.push_back(tok);
+        }
+        
+        return internal;
+    }
+
 };
 

@@ -19,6 +19,34 @@
 *  > Could you come up with an one-pass algorithm using only constant space?
 *               
 **********************************************************************************/
+// my implm
+// 利用快速排序里 partition 的思想， 
+// 第一次将数组按<1分割，第二次按<2分割，排序完毕。
+// 可以推广到 n 种颜色，每种颜色有重复元素的情况。
+class Solution {
+public:
+    // 时间复杂度O(n)， 空间复杂度O(1)
+    void sortColors(vector<int>& nums) { /** 必须是引用*/
+        const int n = nums.size();
+        int one = partition (nums, 0, n-1, 1);
+        int two = partition (nums, one+1, n-1, 2);
+    }
+
+    int partition (vector<int>& arr, int low, int high, int pivot) { 
+        //所有小于pivot的index
+        int i = (low - 1); // Index of smaller element 
+
+        for (int j = low; j <= high ; ++j){
+            // If current element is smaller than the pivot 
+            if (arr[j] < pivot){
+                ++i; // increment index of smaller element
+                swap(arr[i], arr[j]);
+            }
+        }
+        //swap(arr[++i], arr[high]); 
+        return i;
+    } 
+};
 
 #include <stdio.h>
 #include <stdlib.h>
