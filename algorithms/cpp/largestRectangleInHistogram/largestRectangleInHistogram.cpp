@@ -2,18 +2,18 @@
 // Author : Hao Chen
 // Date   : 2014-07-20
 
-/********************************************************************************** 
- * 
- * Given n non-negative integers representing the histogram's bar height where the width of each bar is 1, 
- * find the area of largest rectangle in the histogram.
- * 
- *                    6          
- *                  +---+        
- *               5  |   |        
- *              +---+   |        
- *              |   |   |        
- *              |   |   |        
- *              |   |   |     3  
+/**********************************************************************************
+ *
+ * Given n non-negative integers representing the histogram's bar height where the width of each bar
+ *is 1, find the area of largest rectangle in the histogram.
+ *
+ *                    6
+ *                  +---+
+ *               5  |   |
+ *              +---+   |
+ *              |   |   |
+ *              |   |   |
+ *              |   |   |     3
  *              |   |   |   +---+
  *        2     |   |   | 2 |   |
  *      +---+   |   |   +---+   |
@@ -21,17 +21,17 @@
  *      |   +---+   |   |   |   |
  *      |   |   |   |   |   |   |
  *      +---+---+---+---+---+---+
- *      
+ *
  * Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].
- *      
- *      
- *                    6          
- *                  +---+        
- *               5  |   |        
- *              +-------|        
- *              |-------|        
- *              |-------|        
- *              |-------|     3  
+ *
+ *
+ *                    6
+ *                  +---+
+ *               5  |   |
+ *              +-------|
+ *              |-------|
+ *              |-------|
+ *              |-------|     3
  *              |-------|   +---+
  *        2     |-------| 2 |   |
  *      +---+   |-------|---+   |
@@ -39,69 +39,90 @@
  *      |   +---|-------|   |   |
  *      |   |   |-------|   |   |
  *      +---+---+---+---+---+---+
- *      
- * 
+ *
+ *
  * The largest rectangle is shown in the shaded area, which has area = 10 unit.
- * 
+ *
  * For example,
  * Given height = [2,1,5,6,2,3],
  * return 10.
- * 
- *               
+ *
+ *
  **********************************************************************************/
 
 #include <iostream>
 #include <vector>
 using namespace std;
 
-//Time Limit Exceeded
+// Largest Rectangle in Histogram
+// 时间复杂度O(n)， 空间复杂度O(n)
+class Solution {
+ public:
+  int largestRectangleArea(vector<int>& heights) {
+    stack<int> s;
+    heights.push_back(0);  //处理最右边界
+    int result = 0;
+    for (int i = 0; i < heights.size();) {
+      // 维护一个严格递增的栈， 每次比较栈顶与当前元素，当前元素大于栈顶元素，则入栈
+      if (s.empty() || heights[i] > heights[s.top()])
+        s.push(i++);
+      else {  // 每次计算以栈顶元素为高的最大面积
+        int tmp = s.top();
+        s.pop();
+        result = max(result, heights[tmp] * (s.empty() ? i : i - s.top() - 1));
+      }
+    }
+    return result;
+  }
+};
+
+// Time Limit Exceeded
 int largestRectangleArea_01(vector<int>& heights) {
-    if (heights.size() == 0) return 0;
+  if (heights.size() == 0) return 0;
 
-    // idx of the first bar in the left or right that is lower than current bar
-    vector<int> left(heights.size()); 
-    vector<int> right(heights.size());
+  // idx of the first bar in the left or right that is lower than current bar
+  vector<int> left(heights.size());
+  vector<int> right(heights.size());
 
-    right[heights.size() - 1] = heights.size();
-    left[0] = -1;
+  right[heights.size() - 1] = heights.size();
+  left[0] = -1;
 
-    for (int i = 1; i < heights.size(); i++) {
-        int l = i - 1;
-        while (l >= 0 && heights[l] >= heights[i]) {
-            l--;
-        }
-        left[i] = l;
+  for (int i = 1; i < heights.size(); i++) {
+    int l = i - 1;
+    while (l >= 0 && heights[l] >= heights[i]) {
+      l--;
     }
+    left[i] = l;
+  }
 
-    for (int i = heights.size() - 2; i >= 0; i--) {
-        int r = i + 1;
-        while (r < heights.size() && heights[r] >= heights[i]) {
-            r++;
-        }
-        right[i] = r;
+  for (int i = heights.size() - 2; i >= 0; i--) {
+    int r = i + 1;
+    while (r < heights.size() && heights[r] >= heights[i]) {
+      r++;
     }
+    right[i] = r;
+  }
 
-    int maxArea = 0;
-    for (int i = 0; i < heights.size(); i++) {
-        maxArea = max(maxArea, heights[i] * (right[i] - left[i] - 1));
-    }
+  int maxArea = 0;
+  for (int i = 0; i < heights.size(); i++) {
+    maxArea = max(maxArea, heights[i] * (right[i] - left[i] - 1));
+  }
 
-    return maxArea;        
-
+  return maxArea;
 }
-
 
 // As we know, the area = width * height
 // For every bar, the 'height' is determined by the loweset bar.
 //
-// 1) We traverse all bars from left to right, maintain a stack of bars. Every bar is pushed to stack once. 
-// 2) A bar is popped from stack when a bar of smaller height is seen. 
-// 3) When a bar is popped, we calculate the area with the popped bar as smallest bar. 
-// 4) How do we get left and right indexes of the popped bar – 
-//    the current index tells us the ‘right index’ and index of previous item in stack is the ‘left index’. 
+// 1) We traverse all bars from left to right, maintain a stack of bars. Every bar is pushed to
+// stack once. 2) A bar is popped from stack when a bar of smaller height is seen. 3) When a bar is
+// popped, we calculate the area with the popped bar as smallest bar. 4) How do we get left and
+// right indexes of the popped bar –
+//    the current index tells us the ‘right index’ and index of previous item in stack is the ‘left
+//    index’.
 //
 //
-// In other word, the stack only stores the incresing bars, let's see some example  
+// In other word, the stack only stores the incresing bars, let's see some example
 //
 // Example 1
 // ---------
@@ -129,18 +150,18 @@ int largestRectangleArea_01(vector<int>& heights) {
 //
 // Example 3
 // ---------
-// height =  [4,2,0,3,2,5]  
+// height =  [4,2,0,3,2,5]
 //
 //    stack[] = [ 0 ], i=1, height[1] goes down
 //    1) pop 0,  area = height[0] * 1 = 4
 //
 //    stack[] = [ 1 ], i=2, height[2] goes down
 //    1) pop 1,  area = height[1] * 2 = 4 // <- how do we know the left?
-//                                              start from the 0 ?? 
+//                                              start from the 0 ??
 //
 //    stack[] = [ 2, 3 ], i=4, height[4] goes down
 //    1) pop 3,  area = height[3] * 1 = 3
-//    2) pop 2,  area = height[2] * ? = 0 // <- how do we know the left? 
+//    2) pop 2,  area = height[2] * ? = 0 // <- how do we know the left?
 //                                              start from the 0 ??
 //
 //    stack[] = [ 2,4,5 ], i=6,  meet the end
@@ -150,65 +171,64 @@ int largestRectangleArea_01(vector<int>& heights) {
 //    3) pop 2,  area = height[2] * ? = 4 // <- how do we know the left?
 //                                              start from the 0 ??
 //
-//    so, we can see, when the stack pop the top, the area formular is 
+//    so, we can see, when the stack pop the top, the area formular is
 //
 //          height[stack_pop] *  i - stack[current_top] - 1,   if stack is not empty
 //          height[stack_pop] *  i,                            if stack is empty
 //
-int largestRectangleArea(vector<int> &height) {
-    if (height.size()<=0) return 0;
-    //Create an empty stack.
-    vector<int> stack;
-    //add a flag as a trigger if the end bar is met, and need to check the stack is empty of not .
-    height.push_back(0);
-    int maxArea = 0;
-    for(int i=0; i<height.size(); i++){
-        //If stack is empty or height[i] is higher than the bar at top of stack, then push ‘i’ to stack.
-        if ( stack.size()<=0 || height[i] >= height[stack.back()] ) {
-            stack.push_back(i);
-            continue;
-        }
-        //If this bar is smaller than the top of stack, then keep removing the top of stack while top of the stack is greater. 
-        //Let the removed bar be height[top]. Calculate area of rectangle with height[top] as smallest bar. 
-        //For height[top], the ‘left index’ is previous (previous to top) item in stack and ‘right index’ is ‘i’ (current index).
-        int topIdx = stack.back();
-        stack.pop_back();
-        int area = height[topIdx] * (stack.size()==0 ? i : i - stack.back() - 1 );
-        if ( area > maxArea ) {
-            maxArea = area;
-        }
-        //one more time. Because the stack might still have item.
-        i--;
+int largestRectangleArea(vector<int>& height) {
+  if (height.size() <= 0) return 0;
+  // Create an empty stack.
+  vector<int> stack;
+  // add a flag as a trigger if the end bar is met, and need to check the stack is empty of not .
+  height.push_back(0);
+  int maxArea = 0;
+  for (int i = 0; i < height.size(); i++) {
+    // If stack is empty or height[i] is higher than the bar at top of stack, then push ‘i’ to
+    // stack.
+    if (stack.size() <= 0 || height[i] >= height[stack.back()]) {
+      stack.push_back(i);
+      continue;
     }
-
-    return maxArea;
-}
-
-void printArray(vector<int> &v)
-{
-    cout << "{";
-    for(int i=0; i<v.size(); i++) {
-        cout << " " << v[i];
+    // If this bar is smaller than the top of stack, then keep removing the top of stack while top
+    // of the stack is greater. Let the removed bar be height[top]. Calculate area of rectangle with
+    // height[top] as smallest bar. For height[top], the ‘left index’ is previous (previous to top)
+    // item in stack and ‘right index’ is ‘i’ (current index).
+    int topIdx = stack.back();
+    stack.pop_back();
+    int area = height[topIdx] * (stack.size() == 0 ? i : i - stack.back() - 1);
+    if (area > maxArea) {
+      maxArea = area;
     }
-    cout << "}" << endl;
-}
-void test(int a[], int n)
-{
-    vector<int> v(a, a + n);
-    printArray(v);
-    cout << largestRectangleArea(v) << endl;
+    // one more time. Because the stack might still have item.
+    i--;
+  }
+
+  return maxArea;
 }
 
-int main()
-{
-#define TEST(a) test(a, sizeof(a)/sizeof(int))
+void printArray(vector<int>& v) {
+  cout << "{";
+  for (int i = 0; i < v.size(); i++) {
+    cout << " " << v[i];
+  }
+  cout << "}" << endl;
+}
+void test(int a[], int n) {
+  vector<int> v(a, a + n);
+  printArray(v);
+  cout << largestRectangleArea(v) << endl;
+}
 
-    int a0[] = {2,1,3,1};
-    TEST(a0);
-    int a1[] = {2,1,5,6,2,3};
-    TEST(a1);
+int main() {
+#define TEST(a) test(a, sizeof(a) / sizeof(int))
 
-    return 0;
+  int a0[] = {2, 1, 3, 1};
+  TEST(a0);
+  int a1[] = {2, 1, 5, 6, 2, 3};
+  TEST(a1);
+
+  return 0;
 }
 
 /*int main()
