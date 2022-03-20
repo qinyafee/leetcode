@@ -1,5 +1,43 @@
 // https://leetcode-cn.com/problems/number-of-islands/solution/dao-yu-lei-wen-ti-de-tong-yong-jie-fa-dfs-bian-li-/
 
+// 1254. 统计封闭岛屿的数目
+// dfs如果遇到边界返回false，否则返回true。
+class Solution {
+ public:
+  constexpr static int dirs[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+  int closedIsland(vector<vector<int>>& grid) {
+    if(grid.size() < 2 || grid[0].size() < 2) return 0;
+    int n = grid.size(), m = grid[0].size();
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        if (grid[i][j] == 0) {
+          ans += dfs(i, j, grid);
+        }
+      }
+    }
+    return ans;
+  }
+
+  bool dfs(int x, int y, vector<vector<int>>& grid) {
+    bool f = true; // 是封闭岛屿
+    grid[x][y] = 1;
+    for (auto& dir : dirs) {
+      int nx = x + dir[0];
+      int ny = y + dir[1];
+      if (nx < 0 || ny < 0 || nx >= grid.size() || ny >= grid[0].size()) {
+        f = false; // 岛屿dfs遇到了边界
+        continue;
+      }
+      if (grid[nx][ny] == 0) {
+        f = min(f, dfs(nx, ny, grid)); //key
+      }
+    }
+    return f;
+  };
+};
+
 /// 200. 岛屿数量, https://leetcode-cn.com/problems/number-of-islands
 
 class Solution {
