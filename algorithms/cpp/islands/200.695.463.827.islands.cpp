@@ -1,6 +1,6 @@
 // https://leetcode-cn.com/problems/number-of-islands/solution/dao-yu-lei-wen-ti-de-tong-yong-jie-fa-dfs-bian-li-/
 
-// 1254. 统计封闭岛屿的数目
+// 1254. 统计封闭岛屿的数目 [related: 130. 被围绕的区域]
 // dfs如果遇到边界返回false，否则返回true。
 class Solution {
  public:
@@ -22,7 +22,7 @@ class Solution {
 
   bool dfs(int x, int y, vector<vector<int>>& grid) {
     bool f = true; // 是封闭岛屿
-    grid[x][y] = 1;
+    grid[x][y] = 1; // 设置visited
     for (auto& dir : dirs) {
       int nx = x + dir[0];
       int ny = y + dir[1];

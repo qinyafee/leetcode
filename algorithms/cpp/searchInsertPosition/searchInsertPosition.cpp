@@ -20,6 +20,15 @@
 
 #include <stdio.h>
 
+//my impl
+class Solution {
+public:
+	int searchInsert(vector<int>& nums, int target) {
+		//用stl
+		auto it = std::lower_bound(nums.begin(), nums.end(), target);
+			return std::distance(nums.begin(), it);
+	}
+};
 
 int binary_search(int A[], int n, int key) {
     int low = 0;
