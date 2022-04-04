@@ -1,3 +1,25 @@
+// my impl
+// dp[i] 为到位置 i 时能抢到的金钱最大和
+// dp[i] = max(dp[i-1], dp[i-2]+a[i])
+// 如果不选择i，则抢到的钱是 f[i-1] 如果选择i，则能抢到的钱是 f[i-2] +nums[i]
+
+class Solution {
+ public:
+  int rob(vector<int>& nums) {
+    const int n = nums.size();
+    if (n == 0) return 0;
+    vector<int> dp(n, 0);
+    dp[0] = nums[0];
+    if (n == 1) return dp[0];
+    dp[1] = max(dp[0], nums[1]);
+    for (int i = 2; i < n; ++i) {
+      dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
+    }
+    return dp[n - 1];
+  }
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/house-robber/
 // Author : Hao Chen
 // Date   : 2015-04-07
@@ -19,26 +41,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
-using namespace std;   
-// my impl
-// dp[i] 为到位置 i 时能抢到的金钱最大和
-// dp[i] = max(dp[i-1], dp[i-2]+a[i])
-class Solution {
-public:
-    int rob(vector<int>& nums) {
-        const int n = nums.size();
-        if(n==0) return 0;
-        vector<int> dp(n, 0);
-        dp[0] = nums[0];
-        if(n==1) return dp[0];
-        dp[1] = max(dp[0], nums[1]);
-        for(int i = 2; i < n; ++i){
-            dp[i] = max(dp[i-1], dp[i-2]+nums[i]);
-        }
-        return dp[n-1];
-    }
-};
-
+using namespace std;
 /*
  * Dynamic Programming
  *

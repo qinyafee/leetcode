@@ -1,3 +1,56 @@
+
+/** my impl
+用f(o) 表示选择 o 节点的情况下，o 节点的子树上被选择的节点的最大权值和；
+g(o) 表示不选择 o 节点的情况下，o 节点的子树上被选择的节点的最大权值和；l 和 r 代表 o 的左右孩子。
+
+当 o 被选中时，o 的左右孩子都不能被选中，故 o 被选中情况下子树上被选中点的最大权值和为 l 和 r
+不被选中的最大权值和相加， 即 f(o) = g(l)+g(r) + o->val。
+
+当 o 不被选中时，o 的左右孩子可以被选中，也可以不被选中。对于 o 的某个具体的孩子 x(左或右)，它对 o
+的贡献是 x 被选中和不被选中情况下权值和的较大值。 故 g(o) = max{f(l), g(l)} + max{f(r), g(r)}。
+
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/house-robber-iii/solution/da-jia-jie-she-iii-by-leetcode-solution/
+*/
+
+class Solution {
+ public:
+  unordered_map<TreeNode*, int> f;
+  unordered_map<TreeNode*, int> g;
+
+  void dfs(TreeNode* o) {//必须后根遍历，因为root节点值依赖left/right 的函数值。
+    if (!o) {
+      return;
+    }
+    dfs(o->left);
+    dfs(o->right);
+    f[o] = o->val + g[o->left] + g[o->right];
+    g[o] = max(f[o->left], g[o->left]) + max(f[o->right], g[o->right]);
+  }
+
+  int rob(TreeNode* o) {
+    dfs(o);
+    return max(f[o], g[o]);
+  }
+
+  /*超时
+  int rob(TreeNode* root) {
+      return f(root);
+  }
+  int f(TreeNode* root){
+      if(!root) return 0;
+      return max(f(root->left)+f(root->right), //不抢root
+                  g(root->left)+g(root->right)+root->val);//抢root
+  }
+  int g(TreeNode* root){
+      if(!root) return 0;
+      //if(!root->left && !root->right) return 0;
+      return f(root->left) + f(root->right);
+  }
+  */
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/house-robber-iii/
 // Author : Calinescu Valentin, Hao Chen
 // Date   : 2016-04-29
@@ -40,58 +93,6 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-
-/** my impl
-用f(o) 表示选择 o 节点的情况下，o 节点的子树上被选择的节点的最大权值和；
-g(o) 表示不选择 o 节点的情况下，o 节点的子树上被选择的节点的最大权值和；l 和 r 代表 o 的左右孩子。
-
-当 o 被选中时，o 的左右孩子都不能被选中，故 o 被选中情况下子树上被选中点的最大权值和为 l 和 r 不被选中的最大权值和相加，
-即
-f(o) = g(l)+g(r)。
-
-当 o 不被选中时，o 的左右孩子可以被选中，也可以不被选中。对于 o 的某个具体的孩子 x(左或右)，它对 o 的贡献是 x 被选中和不被选中情况下权值和的较大值。
-故 g(o) = max{f(l), g(l)} + max{f(r), g(r)}。
-
-作者：LeetCode-Solution
-链接：https://leetcode-cn.com/problems/house-robber-iii/solution/da-jia-jie-she-iii-by-leetcode-solution/
-*/
-
-class Solution {
-public:
-    unordered_map <TreeNode*, int> f, g;
-
-    void dfs(TreeNode* o) {
-        if (!o) {
-            return;
-        }
-        dfs(o->left);
-        dfs(o->right);
-        f[o] = o->val + g[o->left] + g[o->right];
-        g[o] = max(f[o->left], g[o->left]) + max(f[o->right], g[o->right]);
-    }
-
-    int rob(TreeNode* o) {
-        dfs(o);
-        return max(f[o], g[o]);
-    }
-
-    /*超时
-    int rob(TreeNode* root) {
-        return f(root);
-    }
-    int f(TreeNode* root){
-        if(!root) return 0;
-        return max(f(root->left)+f(root->right), //不抢root
-                    g(root->left)+g(root->right)+root->val);//抢root
-    }
-    int g(TreeNode* root){
-        if(!root) return 0;
-        //if(!root->left && !root->right) return 0;
-        return f(root->left) + f(root->right);
-    }
-    */
-};
-
   /* 
  * Solution 1 - O(N log N)
  * =========

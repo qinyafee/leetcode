@@ -1,3 +1,62 @@
+
+// my impl 真正的归并排序，递归
+// 先拆分成两个list，再归并排序，调用mergeTwoLists
+// 时间复杂度O(nlogn)， 空间复杂度O(1)
+class Solution {
+ public:
+  ListNode* sortList(ListNode* head) {
+    if (head == nullptr || head->next == nullptr) return head;
+
+    ListNode* middle = findMiddle(head);
+
+    //第二段
+    ListNode* head2 = middle->next;
+    middle->next = nullptr;  // 断开
+
+    ListNode* l1 = sortList(head);  // 前半段排序
+    ListNode* l2 = sortList(head2);
+
+    return mergeTwoLists(l1, l2);
+  }
+
+  ListNode* findMiddle(ListNode* head) {
+    if (head == nullptr) return nullptr;
+
+    ListNode* slow = head;
+    ListNode* fast = head->next;
+    while (fast != nullptr && fast->next != nullptr) {
+      slow = slow->next;
+      fast = fast->next->next;
+    }
+    return slow;
+  }
+
+  ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+    if (list1 == nullptr) return list2;
+    if (list2 == nullptr) return list1;
+
+    ListNode dummy(INT_MIN);
+    ListNode* p = &dummy;
+    ListNode* l1 = list1;
+    ListNode* l2 = list2;
+
+    while (l1 != nullptr && l2 != nullptr) {
+      if (l1->val < l2->val) {
+        p->next = l1;
+        l1 = l1->next;
+      } else {
+        p->next = l2;
+        l2 = l2->next;
+      }
+      p = p->next;
+    }
+
+    p->next = l1 != nullptr ? l1 : l2;  //!注意此行
+    return dummy.next;                  //!返回next
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/sort-list/
 // Author : Hao Chen
 // Date   : 2014-07-06
@@ -11,58 +70,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-//my impl
-//先拆分成两个list，再归并排序，调用mergeTwoLists
-// 归并排序， 时间复杂度O(nlogn)， 空间复杂度O(1)
-class Solution {
-public:
-    ListNode* sortList(ListNode* head) {
-        if(head==NULL || head->next == NULL) return head;
-
-        ListNode* middle = findMiddle(head);
-
-        //第二段
-        ListNode* head2 = middle->next;
-        middle->next = NULL;// 断开
-
-        ListNode* l1 = sortList(head);// 前半段排序
-        ListNode* l2 = sortList(head2);
-
-        return mergeTwoLists(l1, l2);
-    }
-
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode dummy(-1);
-        ListNode* p = &dummy;
-        while(l1&&l2){
-            if(l1->val < l2->val) {
-                p->next = l1;
-                p = l1;
-                l1 = l1->next;
-            }else{
-                p->next = l2;
-                p = l2;
-                l2 = l2->next;            
-            }
-        }
-        if(l1) p->next = l1;
-        else p->next = l2;
-        return dummy.next;
-    }
-
-    ListNode* findMiddle(ListNode* head){
-        if(head == NULL) return NULL;
-
-        ListNode* slow = head;
-        ListNode* fast = head->next;
-        while(fast!=NULL && fast->next != NULL){
-            slow = slow->next;
-            fast = fast->next->next; 
-        }
-        return slow;
-    }
-};
 
 struct ListNode {
     int val;

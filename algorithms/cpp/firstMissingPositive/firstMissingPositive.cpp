@@ -1,3 +1,32 @@
+// my implm
+// 数组视为哈希表
+// https://leetcode-cn.com/problems/first-missing-positive/solution/que-shi-de-di-yi-ge-zheng-shu-by-leetcode-solution/
+// 方法2，见pdf
+class Solution {
+ public:
+  int firstMissingPositive(vector<int>& nums) {
+    int n = nums.size();
+    for (int& num : nums) {
+      if (num <= 0) {
+        num = n + 1; // 全都转化成正数
+      }
+    }
+    for (int i = 0; i < n; ++i) {
+      int a = abs(nums[i]); // 读到数字a
+      if (a <= n) {
+        nums[a - 1] = -abs(nums[a - 1]);//给a-1位的元素加负号，注意绝对值
+      }
+    }
+    for (int i = 0; i < n; ++i) {
+      if (nums[i] > 0) {
+        return i + 1; // 返回第一个正数的 下标+1
+      }
+    }
+    return n + 1; // 没有正数，返回 n+1
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/first-missing-positive/
 // Author : Hao Chen
 // Date   : 2014-07-18

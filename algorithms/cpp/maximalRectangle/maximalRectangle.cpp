@@ -16,6 +16,7 @@
 using namespace std;
 
 // my impl
+// 单调栈
 // https://leetcode-cn.com/problems/maximal-rectangle/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-1-8/
 class Solution {
  public:
@@ -43,9 +44,9 @@ class Solution {
     heights.push_back(0);  //处理最右边界
     int result = 0;
     for (int i = 0; i < heights.size();) {
-      // 维护一个严格递增的栈， 每次比较栈顶与当前元素，当前元素大于栈顶元素，则入栈
-      if (s.empty() || heights[i] > heights[s.top()])
-        s.push(i++);
+      // 维护一个严格递增[非严格也对]的栈， 每次比较栈顶与当前元素，当前元素大于栈顶元素，则入栈
+      if (s.empty() || heights[i] > heights[s.top()]) // 或者 >=
+        s.push(i++); // 只有此时 i++
       else {  // 每次计算以栈顶元素为高的最大面积
         int tmp = s.top();
         s.pop();

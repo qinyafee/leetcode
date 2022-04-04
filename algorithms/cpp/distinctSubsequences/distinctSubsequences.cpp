@@ -1,3 +1,53 @@
+
+// dp[i][j] 代表 T前i字符串，在 S前j字符串里出现的次数.
+// 当 S[j] == T[i] , dp[i][j] = dp[i-1][j-1] + dp[i][j-1];
+// 当 S[j] != T[i] , dp[i][j] = dp[i][j-1]
+// https://leetcode-cn.com/problems/distinct-subsequences/solution/dong-tai-gui-hua-by-powcai-5/
+// c++代码通过不了测试，long long int都会越界
+class Solution {
+ public:
+  int numDistinct(string s, string t) {
+    int N1 = s.size();
+    int N2 = t.size();
+    if (N1 < N2) {
+      return 0;
+    }
+    vector<vector<long long>> dp(N2 + 1, vector<long long>(N1 + 1, 0)); 
+    for (int j = 0; j <= N1; ++j) {
+      dp[0][j] = 1;
+    }
+    for (int i = 1; i <= N2; ++i) {
+      for (int j = 1; j <= N1; ++j) {
+        if (t[i - 1] == s[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + dp[i][j - 1];
+        } else {
+          dp[i][j] = dp[i][j - 1];
+        }
+      }
+    }
+    return dp[N2][N1];
+  }
+};
+
+
+// 二维动规+滚动数组
+// 时间复杂度O(m*n)， 空间复杂度O(n)
+class Solution {
+ public:
+  int numDistinct(const string& S, const string& T) {
+    vector<long long> f(T.size() + 1);
+    f[0] = 1;
+    for (int i = 0; i < S.size(); ++i) {
+      for (int j = T.size() - 1; j >= 0; --j) {
+        f[j + 1] += S[i] == T[j] ? f[j] : 0;
+      }
+    }
+    return f[T.size()];
+  }
+};
+
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/distinct-subsequences/
 // Author : Hao Chen
 // Date   : 2014-07-06

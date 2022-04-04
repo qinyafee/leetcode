@@ -26,6 +26,20 @@ https://leetcode-cn.com/problems/map-of-highest-peak/
 
 没刷的H
 Median of Two Sorted Arrays
+Best Time to Buy and Sell Stock III
+Best Time to Buy and Sell Stock IV
+Scramble String
+Word Break II
+Dungeon Game
+Maximum Gap 基数排序
 
-##M
+
+##没刷的M
 H-Index II
+Best Time to Buy and Sell Stock with Cooldown
+Range Sum Query - Mmutable
+
+##需要再熟悉的
+Decode Ways
+Range Sum Query - Mutable
+Insertion Sort List

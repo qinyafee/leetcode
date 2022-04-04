@@ -2,26 +2,60 @@
 // Author : Hao Chen
 // Date   : 2014-08-27
 
-/********************************************************************************** 
-* 
-* Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
-* 
-* For example,
-* Given:
-* s1 = "aabcc",
-* s2 = "dbbca",
-* 
-* When s3 = "aadbbcbcac", return true.
-* When s3 = "aadbbbaccc", return false.
-* 
-*               
-**********************************************************************************/
+/**********************************************************************************
+ *
+ * Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+ *
+ * For example,
+ * Given:
+ * s1 = "aabcc",
+ * s2 = "dbbca",
+ *
+ * When s3 = "aadbbcbcac", return true.
+ * When s3 = "aadbbbaccc", return false.
+ *
+ *
+ **********************************************************************************/
 
 #include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
 
+// my implm
+// dp[i][j]表示 s1​ 的前i个字符和 s2的前j个字符是否能构成 s3的前i+j个字符
+// 初始化第一行/第一列，状态转移方程：
+// f[i][j] = (s1[i - 1] == s3 [i + j - 1] && f[i - 1][j]) //s1的最后一个字符等于s3的最后一个字符
+// 			  || (s2[j - 1] == s3 [i + j - 1] && f[i][j - 1]); //s2的最后一个字符等于s3的最后一个字符
+// https://leetcode-cn.com/problems/interleaving-string/solution/dong-tai-gui-hua-zhu-xing-jie-shi-python3-by-zhu-3/
+class Solution {
+ public:
+  bool isInterleave(string s1, string s2, string s3) {
+    int len1 = s1.size();
+    int len2 = s2.size();
+    int len3 = s3.size();
+    if (len1 + len2 != len3) {
+      return false;
+    }
+    vector<vector<bool>> dp(len1 + 1, vector<bool>(len2 + 1, false));
+    dp[0][0] = true;                   //一定是 True
+    for (int i = 1; i <= len1; ++i) {  //初始化第一列 dp[i][0]
+      dp[i][0] = s1[i - 1] == s3[i - 1] && dp[i - 1][0];
+    }
+    for (int j = 1; j <= len2; ++j) {  //初始化第一行dp[0][j]
+      dp[0][j] = s2[j - 1] == s3[j - 1] && dp[0][j - 1];
+    }
+    for (int i = 1; i <= len1; ++i) {
+      for (int j = 1; j <= len2; ++j) {
+        dp[i][j] = ((s1[i - 1] == s3[i + j - 1] && dp[i - 1][j]) ||
+                    (s2[j - 1] == s3[i + j - 1] && dp[i][j - 1]));
+      }
+    }
+    return dp[len1][len2];
+  }
+};
+
+// clang-format off
 /*
 Considering:
 
@@ -144,3 +178,4 @@ int main(int argc, char**argv)
     
     return 0;
 }
+// clang-format on

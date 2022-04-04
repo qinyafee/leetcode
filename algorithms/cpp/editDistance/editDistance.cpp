@@ -1,3 +1,60 @@
+// my implm
+// 设状态为 f[i][j] ， 表示A前i个字符和 B的前j个字符之间的最小编辑距离。 设 A[0,i] 的形式
+// 是 str1c ， B[0,j] 的形式是 str2d ，
+// 1. 如果 c==d ， 则 f[i][j]=f[i-1][j-1] ；
+// 2. 如果 c!=d ，f[i][j]选择下面的最小值。
+//    i. 如果将c替换成d， 则 f[i][j]=f[i-1][j-1]+1 ；
+//    ii. 如果在c后面添加一个d， 则 f[i][j]=f[i][j-1]+1 ；
+//    iii. 如果将c删除， 则 f[i][j]=f[i-1][j]+1 ；
+class Solution {
+ public:
+  int minDistance(string word1, string word2) {
+    const int len1 = word1.size();
+    const int len2 = word2.size();
+    int dp[len1 + 1][len2 + 1];
+    dp[0][0] = 0;
+    for (int i = 1; i < len1 + 1; ++i) {
+      dp[i][0] = i;
+    }
+    for (int j = 1; j < len2 + 1; ++j) {
+      dp[0][j] = j;
+    }
+    for (int i = 1; i < len1 + 1; ++i) {
+      for (int j = 1; j < len2 + 1; ++j) {
+        if (word1[i - 1] == word2[j - 1]) {  // 注意index
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = std::min(dp[i - 1][j - 1], std::min(dp[i][j - 1], dp[i - 1][j])) + 1;
+        }
+      }
+    }
+    return dp[len1][len2];
+  }
+};
+
+class Solution {
+ public:
+  int minDistance(const string& word1, const string& word2) {
+    const size_t n = word1.size();
+    const size_t m = word2.size();
+    // 长度为n的字符串， 有n+1个隔板
+    int f[n + 1][m + 1];
+    for (size_t i = 0; i <= n; i++) f[i][0] = i;
+    for (size_t j = 0; j <= m; j++) f[0][j] = j;
+    for (size_t i = 1; i <= n; i++) {
+      for (size_t j = 1; j <= m; j++) {
+        if (word1[i - 1] == word2[j - 1])
+          f[i][j] = f[i - 1][j - 1];
+        else {
+          int mn = min(f[i - 1][j], f[i][j - 1]);
+          f[i][j] = 1 + min(f[i - 1][j - 1], mn);
+        }
+      }
+    }
+    return f[n][m];
+  }
+};
+// clang-format off
 // Source : https://oj.leetcode.com/problems/edit-distance/
 // Author : Hao Chen
 // Date   : 2014-08-22

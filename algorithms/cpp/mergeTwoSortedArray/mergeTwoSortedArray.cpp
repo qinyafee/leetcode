@@ -1,3 +1,25 @@
+// my implm
+// 归并排序
+class Solution {
+ public:
+  void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    int i = m - 1;
+    int j = n - 1;
+    int k = m + n - 1;
+    while (i >= 0 && j >= 0) {
+      nums1[k--] = nums1[i] > nums2[j] ? nums1[i--] : nums2[j--];
+    }
+    while (j >= 0) {
+      nums1[k--] = nums2[j--];
+    }
+    // // 用stl
+    // if (j >= 0) {
+    //   std::copy(nums2.begin(), nums2.begin() + j + 1, nums1.begin());
+    // }
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/merge-sorted-array/
 // Author : Hao Chen
 // Date   : 2014-06-20
