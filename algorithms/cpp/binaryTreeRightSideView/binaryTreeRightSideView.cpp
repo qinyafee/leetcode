@@ -1,3 +1,37 @@
+// my implm
+// 利用层次遍历，广搜
+class Solution {
+ public:
+  vector<int> rightSideView(TreeNode* root) {
+    const auto& levels = levelOrderTraversal(root);
+    vector<int> res;
+    for (const auto& lev : levels) {
+      res.push_back(lev.back());
+    }
+    return res;
+  }
+
+  vector<vector<int>> levelOrderTraversal(TreeNode* root) {
+    vector<vector<int>> res;
+    queue<TreeNode*> current, next;  //当前层和下一层
+    if (root != NULL) current.push(root);
+    while (!current.empty()) {
+      vector<int> level;  //存储当前层元素
+      while (!current.empty()) {
+        TreeNode* p = current.front();
+        current.pop();
+        level.push_back(p->val);
+        if (p->left != NULL) next.push(p->left);
+        if (p->right != NULL) next.push(p->right);
+      }
+      res.push_back(level);  //容易忘！！！
+      swap(current, next);
+    }
+    return res;
+  }
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/binary-tree-right-side-view/
 // Author : Hao Chen
 // Date   : 2015-04-07

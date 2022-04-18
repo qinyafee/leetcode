@@ -1,3 +1,34 @@
+// my implm
+class Solution {
+ public:
+  vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+    auto levels = levelOrderTraversal(root);
+    //偶数行reverse
+    for (int i = 1; i < levels.size(); i += 2) {
+      std::reverse(levels[i].begin(), levels[i].end());
+    }
+    return levels;
+  }
+
+  vector<vector<int>> levelOrderTraversal(TreeNode* root) {
+    vector<vector<int>> result;
+    tranverse(root, 1, result);
+    return result;
+  }
+  void tranverse(TreeNode* root, int level, vector<vector<int>>& result) {
+    if (!root) return;  //这个容易忘记！！！
+
+    if (level > result.size()) result.push_back(vector<int>());
+
+    result[level - 1].push_back(root->val);  //这个容易忘记！！！
+
+    tranverse(root->left, level + 1, result);
+    tranverse(root->right, level + 1, result);
+  }
+};
+
+// clang-format off
+
 // Source : https://oj.leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
 // Author : Hao Chen
 // Date   : 2014-07-05
@@ -45,35 +76,6 @@
 * 
 *               
 **********************************************************************************/
-
-/** 我的实现更简洁
- */
-class Solution {
-public:
-    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        int level = 1;
-        vector<vector<int> > res;
-        
-        tranverse(root, level, res);
-        
-        //偶数行reverse
-        for(int i = 1; i < res.size(); i +=2){
-            std::reverse(res[i].begin(), res[i].end());
-        }
-
-        return res;
-    }
-    void tranverse(TreeNode* root, int level, vector<vector<int> >& res){
-        if(!root) return;
-        
-        if(level > res.size()) res.push_back(vector<int>());
-        res[level-1].push_back(root->val);
-        
-        tranverse(root->left, level+1, res);
-        tranverse(root->right, level+1, res);
-    }
-};
-
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,44 @@
+// 前序遍历，递归，还能优化
+// https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/solution/er-cha-shu-zhan-kai-wei-lian-biao-by-leetcode-solu/
+class Solution {
+ public:
+  void flatten(TreeNode* root) {
+    vector<TreeNode*> l;
+    preorderTraversal(root, l);
+    int n = l.size();
+    for (int i = 1; i < n; i++) {
+      TreeNode *prev = l.at(i - 1), *curr = l.at(i);
+      prev->left = nullptr;
+      prev->right = curr;
+    }
+  }
+
+  void preorderTraversal(TreeNode* root, vector<TreeNode*>& l) {
+    if (root != NULL) {
+      l.push_back(root);
+      preorderTraversal(root->left, l);
+      preorderTraversal(root->right, l);
+    }
+  }
+};
+
+//别人的实现
+// 递归版1， 时间复杂度O(n)， 空间复杂度O(logn)
+class Solution {
+ public:
+  void flatten(TreeNode* root) {
+    helper(root, NULL);
+  }
+  // 把root所代表树变成链表后， tail跟在该链表后面
+  TreeNode* helper(TreeNode* root, TreeNode* tail) {
+    if (root == NULL) return tail;
+    root->right = helper(root->left, helper(root->right, tail));
+    root->left = NULL;
+    return root;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/flatten-binary-tree-to-linked-list/
 // Author : Hao Chen
 // Date   : 2014-07-03
@@ -35,22 +76,6 @@
 * the next node of a pre-order traversal.
 *               
 **********************************************************************************/
-//别人的实现
-// 递归版1， 时间复杂度O(n)， 空间复杂度O(logn)
-class Solution {
-public:
-    void flatten(TreeNode* root) {
-        helper(root, NULL);
-    }
-    // 把root所代表树变成链表后， tail跟在该链表后面
-    TreeNode* helper(TreeNode* root, TreeNode* tail){
-        if(root == NULL) return tail;
-        root->right= helper(root->left, helper(root->right, tail));
-        root->left = NULL;
-        return root;
-    }
-};
-
 /**
  * Definition for binary tree
  * struct TreeNode {

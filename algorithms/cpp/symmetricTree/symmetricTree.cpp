@@ -1,3 +1,20 @@
+// 递归版， 时间复杂度O(n)， 空间复杂度O(logn)
+class Solution {
+ public:
+  bool isSymmetric(TreeNode* root) {
+    if (root == nullptr) return true;
+    return isSymmetric(root->left, root->right);
+  }
+  bool isSymmetric(TreeNode* p, TreeNode* q) {
+    if (p == nullptr && q == nullptr) return true;   // 终止条件
+    if (p == nullptr || q == nullptr) return false;  // 剪枝
+    return isSymmetric(p->left, q->right) && isSymmetric(p->right, q->left) && p->val == q->val;
+  }
+};
+
+// 迭代版。。
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/symmetric-tree/
 // Author : Hao Chen
 // Date   : 2014-06-28

@@ -1,3 +1,34 @@
+// my implm
+// 自底向上(bottom-up)，看看是否能在 root 的左子树中找到 p 或 q ，再看看能否在右子树中找到
+// 如果两边都能找到， 说明当前节点就是最近公共祖先
+// 如果左边没找到， 则说明 p 和 q 都在右子树
+// 如果右边没找到， 则说明 p 和 q 都在左子树
+// https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/236-er-cha-shu-de-zui-jin-gong-gong-zu-xian-hou-xu/
+class Solution {
+ public:
+ 	// 递归对二叉树进行先序遍历，当遇到节点 p 或 q 时返回。
+  TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (root == nullptr || root == p || root == q) return root;
+    TreeNode* lson = lowestCommonAncestor(root->left, p, q);
+    TreeNode* rson = lowestCommonAncestor(root->right, p, q);
+    if (lson == nullptr) return rson;
+    if (rson == nullptr) return lson;
+    return root;
+  }
+
+	// 4种情况分别写：
+  TreeNode* lowestCommonAncestor2(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (root == nullptr || root == p || root == q) return root;  // 终止条件
+    TreeNode* lson = lowestCommonAncestor(root->left, p, q);
+    TreeNode* rson = lowestCommonAncestor(root->right, p, q);
+    if (lson == nullptr && rson == nullptr) return nullptr;  // 1.root 的左/右子树中都不包含p,q
+    if (lson == nullptr) return rson;  // 3.p,q不在左子树中，返回 right
+    if (rson == nullptr) return lson;  // 4.p,q不在右子树中，返回 left
+    return root;  // 2. if(lson != null and rson != null), 说明 p,q 分列在 root的 异侧
+  }
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
 // Author : Hao Chen
 // Date   : 2015-07-17

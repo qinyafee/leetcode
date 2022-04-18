@@ -1,3 +1,34 @@
+// my implm
+// 中序遍历
+class Solution {
+ public:
+  int kthSmallest(TreeNode* root, int k) {
+    int result;
+    stack<const TreeNode*> stk;
+    const TreeNode* p = root;
+    while (!stk.empty() || p != NULL) {
+      if (p != NULL) {
+        stk.push(p);
+        p = p->left;
+      } else {
+        p = stk.top();
+        stk.pop();
+        --k;
+        if (k == 0) {
+          result = p->val;
+          break;
+        }
+        p = p->right;
+      }
+    }
+    return result;
+  }
+};
+
+// 2. 可以增加一个字段 leftCnt 
+// https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/solution/er-cha-sou-suo-shu-zhong-di-kxiao-de-yua-8o07/
+
+// clang-format off
 // Source : https://leetcode.com/problems/kth-smallest-element-in-a-bst/
 // Author : Hao Chen
 // Date   : 2015-07-03

@@ -1,3 +1,48 @@
+
+// my implm
+// 扫描一遍数组，用变量x1保存当前最小的值，变量x2保存当前第二小的值。
+// 如果右面能碰到一个数大于x2，说明必然存在一个递增的三元组。
+class Solution {
+ public:
+  // 时间O(n)
+  bool increasingTriplet(vector<int>& nums) {
+    if (nums.size() < 3) return false;
+    int first = nums[0];
+    int second = INT_MAX;
+    for (int i = 1; i < nums.size(); ++i) {
+      if (nums[i] < first) {
+        first = nums[i];
+        // 不要急着重置second，只要后面大于old second就行
+        // second = INT_MAX;
+      } else if (nums[i] > first && nums[i] < second)
+        second = nums[i];
+      else if (nums[i] > second)
+        return true;
+    }
+    return false;
+  }
+
+  //时间O(n^2)，不太好的实现
+  bool increasingTriplet2(vector<int>& nums) {
+    if (nums.size() < 3) return false;
+    int first = nums[0];
+    int second = INT_MAX;
+    for (int i = 1; i < nums.size() - 1; ++i) {
+      if (nums[i] < first) {
+        first = nums[i];
+        second = INT_MAX;
+      } else if (nums[i] > first && nums[i] < second)
+        second = nums[i];
+      else if (nums[i] > second)
+        return true;
+      for (int j = i + 1; j < nums.size(); ++j)
+        if (nums[j] > second) return true;
+    }
+    return false;
+  }
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/increasing-triplet-subsequence/
 // Author : Calinescu Valentin, Hao Chen
 // Date   : 2016-02-27
@@ -20,53 +65,6 @@
  * return false.
  * 
  ***************************************************************************************/
-
-// my implm
-// 扫描一遍数组，用变量x1保存当前最小的值，变量x2保存当前第二小的值。
-// 如果右面能碰到一个数大于x2，说明必然存在一个递增的三元组。
-class Solution {
-public:
-    // 时间O(n)
-    bool increasingTriplet(vector<int>& nums) {
-        if(nums.size() < 3) return false;
-        int first = nums[0];
-        int second = INT_MAX;
-        for(int i = 1; i < nums.size(); ++i){
-            if(nums[i] < first){
-                first = nums[i];
-                // 不要急着重置second，只要后面大于old second就行
-                // second = INT_MAX;
-            }
-            else if(nums[i] > first && nums[i] < second)
-                second = nums[i];
-            else if(nums[i] > second)
-                return true;
-        }
-        return false;
-    }
-
-    //时间O(n^2)，不太好的实现
-    bool increasingTriplet2(vector<int>& nums) {
-        if(nums.size() < 3) return false;
-        int first = nums[0];
-        int second = INT_MAX;
-        for(int i = 1; i < nums.size()-1; ++i){
-            if(nums[i] < first){
-                first = nums[i];
-                second = INT_MAX;
-            }
-            else if(nums[i] > first && nums[i] < second)
-                second = nums[i];
-            else if(nums[i] > second)
-                return true;
-            for(int j = i+1; j < nums.size(); ++j)
-                if(nums[j] > second)
-                    return true;
-        }
-        return false;
-    }
-};
-local
 class Solution {
 public:
     bool increasingTriplet(vector<int>& nums) {

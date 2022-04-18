@@ -1,3 +1,36 @@
+// my implm
+// bottom-up 自底向上递归， 中序遍历
+// https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/solution/you-xu-lian-biao-zhuan-huan-er-cha-sou-suo-shu-1-3/
+// 时间复杂度O(n)， 空间复杂度O(logn)
+class Solution {
+ public:
+  TreeNode* sortedListToBST(ListNode* head) {
+    int len = 0;
+    ListNode* p = head;
+    while (p) {
+      len++;
+      p = p->next;
+    }
+    return buildTree(head, 0, len - 1);
+  }
+
+ private:
+  TreeNode* buildTree(ListNode*& head, int left, int right) {
+    if (left > right) {
+      return nullptr; //遍历到的位置对应着一个空节点
+    }
+    int mid = left + (right - left) / 2;
+    TreeNode* root = new TreeNode();  // 占位节点
+    root->left = buildTree(head, left, mid - 1);
+    root->val = head->val;  // 遍历到中间节点，填值
+    head = head->next;
+    root->right = buildTree(head, mid + 1, right);
+    return root;
+  }
+};
+
+// clang-format off
+
 // Source : https://oj.leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
 // Author : Hao Chen
 // Date   : 2014-07-03

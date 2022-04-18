@@ -1,3 +1,37 @@
+
+// my implm
+// 我们需要在遍历树的同时保留结点的上界与下界，在比较时不仅比较子结点的值，也要与上下界比较。
+// 递归/迭代都可以。
+class Solution {
+ public:
+  bool isValidBST(TreeNode* root) {
+    return isValid(root, INT64_MIN, INT64_MAX);  //
+  }
+  //或者用long long
+  bool isValid(TreeNode* root, int64_t lower_bound, int64_t upper_bound) {
+    if (root == nullptr) return true;
+    return root->val > lower_bound && root->val < upper_bound &&
+           isValid(root->left, lower_bound, root->val) &&
+           isValid(root->right, root->val, upper_bound);
+  }
+
+  //用int，太大的测试用例无法通过
+  /*    bool isValidBST(TreeNode* root) {
+          return isValid(root, INT_MIN, INT_MAX);//
+      }
+
+      bool isValid(TreeNode* root, int lower_bound, int upper_bound){
+          if(root == NULL) return true;
+          return  root->val > lower_bound &&
+                  root->val < upper_bound &&
+                  isValid(root->left, lower_bound, root->val) &&
+                  isValid(root->right, root->val, upper_bound);
+
+      }
+      */
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/validate-binary-search-tree/
 // Author : Hao Chen
 // Date   : 2014-07-05
@@ -33,40 +67,6 @@
 * 
 *               
 **********************************************************************************/
-//my implm
-//这意味着我们需要在遍历树的同时保留结点的上界与下界，在比较时不仅比较子结点的值，也要与上下界比较。
-// 递归/迭代都可以。
-class Solution {
-public:
-    bool isValidBST(TreeNode* root) {
-        return isValid(root, INT64_MIN, INT64_MAX);//
-    }
-    //或者用long long
-    bool isValid(TreeNode* root, int64_t lower_bound, int64_t upper_bound){
-        if(root == NULL) return true;
-        return  root->val > lower_bound && 
-                root->val < upper_bound &&
-                isValid(root->left, lower_bound, root->val) &&
-                isValid(root->right, root->val, upper_bound);
-
-    }
-
-//用int，太大的测试用例无法通过
-/*    bool isValidBST(TreeNode* root) {
-        return isValid(root, INT_MIN, INT_MAX);//
-    }
-
-    bool isValid(TreeNode* root, int lower_bound, int upper_bound){
-        if(root == NULL) return true;
-        return  root->val > lower_bound && 
-                root->val < upper_bound &&
-                isValid(root->left, lower_bound, root->val) &&
-                isValid(root->right, root->val, upper_bound);
-
-    }
-    */
-};
-
 
 #include <iostream>
 #include <vector>

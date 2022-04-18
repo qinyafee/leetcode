@@ -1,3 +1,53 @@
+// 层次遍历可以解，但是空间复杂度不是O(1)
+// 使用已建立的 next指针，已经保存了每层队列顺序。
+
+// 递归
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  Node* connect(Node* root) {
+    if (root == nullptr) return nullptr;
+    Node dummy(-1);  // 虚拟节点，方便找到下一层的最左边节点
+    for (Node *curr = root, *prev = &dummy; curr; curr = curr->next) {  // 遍历当前层
+      if (curr->left != nullptr) {                                      // 建立下一层的next
+        prev->next = curr->left;
+        prev = prev->next;
+      }
+      if (curr->right != nullptr) {
+        prev->next = curr->right;
+        prev = prev->next;
+      }
+    }
+    connect(dummy.next);  // 遍历下一层，从最左边节点开始
+    return root;
+  }
+};
+
+// 迭代
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  void connect(Node* root) {
+    while (root) {
+      Node* next = nullptr;  // the first node of next level
+      Node* prev = nullptr;  // previous node on the same level
+      for (; root; root = root->next) {
+        if (!next) next = root->left ? root->left : root->right;
+        if (root->left) {
+          if (prev) prev->next = root->left;
+          prev = root->left;
+        }
+        if (root->right) {
+          if (prev) prev->next = root->right;
+          prev = root->right;
+        }
+      }
+      root = next;  // turn to next level
+    }
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/populating-next-right-pointers-in-each-node/
 // Author : Hao Chen
 // Date   : 2014-06-19
@@ -6,10 +56,10 @@
 * 
 * Given a binary tree
 * 
-*     struct TreeLinkNode {
-*       TreeLinkNode *left;
-*       TreeLinkNode *right;
-*       TreeLinkNode *next;
+*     struct Node {
+*       Node *left;
+*       Node *right;
+*       Node *next;
 *     }
 * 
 * Populate each next pointer to point to its next right node. 
@@ -50,15 +100,15 @@ using namespace std;
 /**
  * Definition for binary tree with next pointer.
  */
-struct TreeLinkNode {
+struct Node {
     int val;
-    TreeLinkNode *left, *right, *next;
-    TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
-    TreeLinkNode() : val(0), left(NULL), right(NULL), next(NULL) {}
+    Node *left, *right, *next;
+    Node(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
 };
 
 
-void connect(TreeLinkNode *root) {
+void connect(Node *root) {
 
     if (root==NULL){
         return;
@@ -74,13 +124,13 @@ void connect(TreeLinkNode *root) {
 
 }
 
-void connect1(TreeLinkNode *root) {
+void connect1(Node *root) {
 
     if (root==NULL){
         return;
     }
 
-    vector<TreeLinkNode*> v;    
+    vector<Node*> v;    
     v.push_back(root);
     int i = 0;
     
@@ -104,13 +154,13 @@ void connect1(TreeLinkNode *root) {
 
 }
 
-void connect2(TreeLinkNode *root) {
+void connect2(Node *root) {
 
     if (root==NULL){
         return;
     }
     
-    vector<TreeLinkNode*> v;
+    vector<Node*> v;
 
     v.push_back(root);
     
@@ -131,16 +181,16 @@ void connect2(TreeLinkNode *root) {
     }
 }
 
-void connect3(TreeLinkNode *root) {
+void connect3(Node *root) {
     if(root == NULL) return;
 
-    queue<TreeLinkNode*> q;
-    TreeLinkNode *prev, *last;
+    queue<Node*> q;
+    Node *prev, *last;
     prev = last = root;
 
     q.push(root);
     while(!q.empty()) {
-        TreeLinkNode* p = q.front();
+        Node* p = q.front();
         q.pop();
 
         prev->next = p;
@@ -162,11 +212,11 @@ void connect3(TreeLinkNode *root) {
 // constant space
 // key point: we can use `next` pointer to represent
 //      the buffering queue of level order traversal.
-void connect4(TreeLinkNode *root) {
+void connect4(Node *root) {
     if(root == NULL) return;
 
-    TreeLinkNode *head, *tail;
-    TreeLinkNode *prev, *last;
+    Node *head, *tail;
+    Node *prev, *last;
 
     head = tail = NULL;
     prev = last = root;
@@ -177,7 +227,7 @@ void connect4(TreeLinkNode *root) {
 
     push(root);
     while(head != NULL) {
-        TreeLinkNode* p = head;
+        Node* p = head;
         head = head->next; // pop
 
         prev->next = p;
@@ -196,7 +246,7 @@ void connect4(TreeLinkNode *root) {
 #undef push
 }
 
-void printTree(TreeLinkNode *root){
+void printTree(Node *root){
     if (root == NULL){
         return;
     }
@@ -214,7 +264,7 @@ void printTree(TreeLinkNode *root){
 int main()
 {
     const int cnt = 7; 
-    TreeLinkNode a[cnt];
+    Node a[cnt];
     for(int i=0; i<cnt; i++){
         a[i].val = i+1;
     } 
