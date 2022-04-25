@@ -155,6 +155,8 @@ class Solution {
 };
 
 /// 827.【Hard】 最大人工岛https://leetcode-cn.com/problems/making-a-large-island/
+// 第一遍 DFS 遍历陆地格子，计算每个岛屿的面积并标记岛屿编号；
+// 第二遍 DFS 遍历海洋格子，观察每个海洋格子相邻的陆地格子。
 class Solution {
  public:
   int largestIsland(vector<vector<int>>& grid) {
@@ -170,13 +172,14 @@ class Solution {
       }
     }
 
+    // 第二遍遍历海洋格子
     int max_global = 0;
     bool has_ocean_grid = false;
     for (int i = 0; i < grid.size(); ++i) {
       for (int j = 0; j < grid[0].size(); ++j) {
         if (grid[i][j] != 0) continue;
         has_ocean_grid = true;
-        set<int> id_set;
+        set<int> id_set; // 周围陆地区域去重
         // grid[i][j] = -1;  //标记海洋为已访问
         if (inArea(i, j - 1, grid) && grid[i][j - 1] != 0) id_set.insert(grid[i][j - 1]);
         if (inArea(i, j + 1, grid) && grid[i][j + 1] != 0) id_set.insert(grid[i][j + 1]);
@@ -199,7 +202,7 @@ class Solution {
     // 不是【未访问的陆地格子】，直接返回
     if (grid[i][j] != 1) return 0;
 
-    grid[i][j] = id;  //标记陆地为已访问
+    grid[i][j] = id;  //标记陆地为已访问，设置id
     return 1 + dfsArea(i, j - 1, id, grid) + dfsArea(i, j + 1, id, grid) +
            dfsArea(i - 1, j, id, grid) + dfsArea(i + 1, j, id, grid);
   }
