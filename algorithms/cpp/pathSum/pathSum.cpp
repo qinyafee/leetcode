@@ -1,3 +1,32 @@
+// my implm
+// 由于题目没有说节点的数据一定是正整数，必须要走到叶子节点才能判断,
+// 因此中途没法剪枝， 只能进行朴素深搜。
+class Solution {
+public:
+	bool hasPathSum(TreeNode* root, int sum) {
+		if(root == nullptr) return false;
+		// 叶子节点定义
+		if(!root->left && !root->right) return sum == root->val;
+		return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
+	}
+};
+
+---------------
+输入：
+[]
+0
+
+预期结果：
+false
+
+所以下面给行不通
+bool hasPathSum(TreeNode* root, int sum) {
+    if(root == NULL) return sum == 0; //行不通
+    return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
+}
+--------------------
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/path-sum/
 // Author : Hao Chen
 // Date   : 2014-06-22
@@ -21,32 +50,6 @@
 * return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 *               
 **********************************************************************************/
-// my implm
-class Solution {
-public:
-    bool hasPathSum(TreeNode* root, int sum) {
-        if(root == NULL) return false;
-        if(!root->left && !root->right) return sum == root->val;
-        return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
-    }
-};
-
----------------
-输入：
-[]
-0
-
-预期结果：
-false
-
-所以下面给行不通
-bool hasPathSum(TreeNode* root, int sum) {
-    if(root == NULL) return sum == 0; //行不通
-    return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
-}
---------------------
-
-
 
 #include <time.h>
 

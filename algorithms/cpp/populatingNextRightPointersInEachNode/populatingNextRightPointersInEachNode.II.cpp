@@ -1,3 +1,55 @@
+//  117. 此题没有限定完美二叉树， 同116解法
+
+// 层次遍历可以解，但是空间复杂度不是O(1)
+// 使用已建立的 next指针，已经保存了每层队列顺序。
+
+// 递归
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  Node* connect(Node* root) {
+    if (root == nullptr) return nullptr;
+    Node dummy(-1);  // 虚拟节点，方便找到下一层的最左边节点
+    for (Node *curr = root, *prev = &dummy; curr; curr = curr->next) {  // 遍历当前层
+      if (curr->left != nullptr) {                                      // 建立下一层的next
+        prev->next = curr->left;
+        prev = prev->next;
+      }
+      if (curr->right != nullptr) {
+        prev->next = curr->right;
+        prev = prev->next;
+      }
+    }
+    connect(dummy.next);  // 遍历下一层，从最左边节点开始
+    return root;
+  }
+};
+
+// 迭代
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  void connect(Node* root) {
+    while (root) {
+      Node* next = nullptr;  // the first node of next level
+      Node* prev = nullptr;  // previous node on the same level
+      for (; root; root = root->next) {
+        if (!next) next = root->left ? root->left : root->right;
+        if (root->left) {
+          if (prev) prev->next = root->left;
+          prev = root->left;
+        }
+        if (root->right) {
+          if (prev) prev->next = root->right;
+          prev = root->right;
+        }
+      }
+      root = next;  // turn to next level
+    }
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
 // Author : Hao Chen
 // Date   : 2014-06-19

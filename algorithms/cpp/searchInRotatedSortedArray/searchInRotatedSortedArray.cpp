@@ -20,6 +20,7 @@
 #include <time.h>
 
 // my implm
+// 没有重复。如果 A[left] <= A[mid] ,那么 [left,mid] 一定为单调递增序列。
 class Solution {
  public:
   int search(vector<int>& nums, int target) {
@@ -31,15 +32,15 @@ class Solution {
       }
 
       if (nums[left] <= nums[mid]) {                       // 左边有序
-        if (nums[left] <= target && target < nums[mid]) {  // target 在左边的左边
+        if (nums[left] <= target && target < nums[mid]) {  // target 在有序左边的左边
           right = mid - 1;
-        } else {
+        } else {  // target 在有序左边的右边
           left = mid + 1;
         }
       } else {                                              // 右边有序
-        if (nums[mid] < target && target <= nums[right]) {  // target 在右边的右边
+        if (nums[mid] < target && target <= nums[right]) {  // target 在有序右边的右边
           left = mid + 1;
-        } else {
+        } else {   // target 在有序右边的左边
           right = mid - 1;
         }
       }

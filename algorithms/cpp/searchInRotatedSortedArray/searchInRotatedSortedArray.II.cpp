@@ -25,11 +25,11 @@
 //            ^ ^
 
 // my implm
-// 允许重复元素， 则上一题【33.不允许重复】中。如果 A[left] <= A[mid] ,那么 [left,mid]
-// 为递增序列的假设就不能成立了， 比如 [1,3,1,1,1] 。
+// 允许重复元素， 则上一题【33.不允许重复】中。如果 A[left] <= A[mid] ,
+// 那么[left,mid]为递增序列的假设就不能成立了， 比如 [1,3,1,1,1] 。
 // 既然 A[left] <= A[mid] 不能确定递增，那就把它拆分成两个条件：
-//  若 A[left] < A[mid] ， 则区间 [left,mid] 一定递增
-//  若 A[left] == A[mid] 确定不了， 那就 left++ ，往下看一步即可。
+// 1. 若 A[left] < A[mid]，则区间 [left,mid] 一定递增
+// 2. 若 A[left] == A[mid] 确定不了， 那就 left++ ，往下看一步即可。
 
 class Solution {
  public:
@@ -41,20 +41,20 @@ class Solution {
         return true;
       }
       if (nums[left] < nums[mid]) {                        // 左边有序
-        if (nums[left] <= target && target < nums[mid]) {  // target 在左边
+        if (nums[left] <= target && target < nums[mid]) {  // target 在有序左边的左边
           right = mid - 1;
-        } else {
+        } else {  // target 在有序左边的右边
           left = mid + 1;
         }
       } else if (nums[left] > nums[mid]) {                  // 右边有序
-        if (nums[mid] < target && target <= nums[right]) {  // target 在右边
+        if (nums[mid] < target && target <= nums[right]) {  // target 在有序右边的右边
           left = mid + 1;
-        } else {
+        } else {  // target 在有序右边的左边
           right = mid - 1;
         }
       } else {
-				++left; // 不能判断哪边有序，跳过重复
-			}
+        ++left;  // 不能判断哪边有序，跳过重复
+      }
     }
     return false;
   }

@@ -1,3 +1,23 @@
+//我的实现
+class Solution {
+ public:
+  int maxDepth(TreeNode* root) {
+    if (root == nullptr) return 0;
+    return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+  }
+
+	//细分
+  int maxDepth2(TreeNode* root) {
+    if (root == NULL) return 0;
+    if (root->left == NULL && root->right == NULL) return 1;
+    int m1 = maxDepth(root->left);
+    int m2 = maxDepth(root->right);
+    // if(root->left == NULL || root->right == NULL) return m1 +m2 +1;
+    return max(m1, m2) + 1;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/maximum-depth-of-binary-tree/
 // Author : Hao Chen
 // Date   : 2014-06-21
@@ -10,19 +30,6 @@
 * down to the farthest leaf node.
 *               
 **********************************************************************************/
-//我的实现
-class Solution {
-public:
-    int maxDepth(TreeNode* root) {
-        if(root == NULL) return 0;
-        if(root->left == NULL && root->right == NULL) return 1;
-        int m1 = maxDepth(root->left);
-        int m2 = maxDepth(root->right);
-        //if(root->left == NULL || root->right == NULL) return m1 +m2 +1;
-        return max(m1, m2) + 1;
-        
-    }
-};
 
 /**
  * Definition for binary tree
