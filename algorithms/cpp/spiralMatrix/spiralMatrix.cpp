@@ -1,3 +1,31 @@
+// my implm
+class Solution {
+ public:
+  // 时间复杂度O(n^2)， 空间复杂度O(1)
+  vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    vector<int> result;
+    if (matrix.empty()) return result;
+    int beginX = 0, endX = matrix.size() - 1;
+    int beginY = 0, endY = matrix[0].size() - 1;
+    while (true) {
+      // From left to right
+      for (int j = beginY; j <= endY; ++j) result.push_back(matrix[beginX][j]);
+      if (++beginX > endX) break;  //去掉上行
+      // From top to bottom
+      for (int i = beginX; i <= endX; ++i) result.push_back(matrix[i][endY]);
+      if (beginY > --endY) break;  //去掉右列
+      // From right to left
+      for (int j = endY; j >= beginY; --j) result.push_back(matrix[endX][j]);
+      if (beginX > --endX) break;  //去掉下行
+      // From bottom to top
+      for (int i = endX; i >= beginX; --i) result.push_back(matrix[i][beginY]);
+      if (++beginY > endY) break;  //去掉左列
+    }
+    return result;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/spiral-matrix/
 // Author : Hao Chen
 // Date   : 2014-06-30
@@ -19,36 +47,6 @@
 * 
 *               
 **********************************************************************************/
-// my implm
-class Solution {
-public:
-    // 时间复杂度O(n^2)， 空间复杂度O(1)
-    vector<int> spiralOrder(vector<vector<int> >& matrix) {
-        vector<int> result;
-        if (matrix.empty()) return result;
-        int beginX = 0, endX = matrix.size() - 1;
-        int beginY = 0, endY = matrix[0].size() - 1;
-        while (true) {
-            // From left to right
-            for (int j = beginY; j <= endY; ++j)
-                result.push_back(matrix[beginX][j]);
-            if (++beginX > endX) break; //去掉上行
-            // From top to bottom
-            for (int i = beginX; i <= endX; ++i)
-                result.push_back(matrix[i][endY]);
-            if (beginY > --endY) break; //去掉右列
-            // From right to left
-            for (int j = endY; j >= beginY; --j)
-                result.push_back(matrix[endX][j]);
-            if (beginX > --endX) break; //去掉下行
-            // From bottom to top
-            for (int i = endX; i >= beginX; --i)
-                result.push_back(matrix[i][beginY]);
-            if (++beginY > endY) break;//去掉左列
-        }
-        return result;
-    }
-};
 
 #include <stdio.h>
 #include <stdlib.h>

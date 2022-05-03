@@ -1,3 +1,51 @@
+// Max Points on a Line
+// 暴力枚举， 以点为中心， 时间复杂度O(n^2)， 空间复杂度O(n^2)
+// 以每个“点”为中心， 然后遍历剩余点， 找到所有的斜率，如果斜率相同， 那么一定共线.
+// 对每个点， 用一个哈希表， key为斜率， value为该直线上的点数，
+// 计算出哈希表后， 取最大值， 并更新全局最大值， 最后就是结果。
+
+class Solution {
+ public:
+  int maxPoints(vector<vector<int>>& points) {
+    if (points.size() < 3) return points.size();
+    int result = 0;
+    unordered_map<double, int> slope_count;
+    for (int i = 0; i < points.size() - 1; i++) {
+      slope_count.clear();
+      int samePointNum = 0;  // 与i重合的点
+      int point_max = 1;     // 和i共线的最大点数
+      for (int j = i + 1; j < points.size(); j++) {
+        double slope;  // 斜率
+        if (points[i][0] == points[j][0]) {
+          slope = std::numeric_limits<double>::infinity();  //! 无穷大的表示
+          if (points[i][1] == points[j][1]) {
+            ++samePointNum;
+            continue;
+          }
+        } else {
+          if (points[i][1] == points[j][1]) {
+            // 0.0 and -0.0 is the same
+            slope = 0.0;
+          } else {
+            slope = 1.0 * (points[i][1] - points[j][1]) / (points[i][0] - points[j][0]);
+          }
+        }
+        int count = 0;
+        if (slope_count.find(slope) != slope_count.end())
+          count = ++slope_count[slope];
+        else {
+          count = 2;  // 从2开始
+          slope_count[slope] = 2;
+        }
+        if (point_max < count) point_max = count;
+      }
+      result = max(result, point_max + samePointNum);
+    }
+    return result;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/max-points-on-a-line/
 // Author : Hao Chen
 // Date   : 2014-10-12

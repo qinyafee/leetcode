@@ -1,3 +1,64 @@
+// Insert Interval
+
+// https://leetcode-cn.com/problems/insert-interval/solution/cha-ru-qu-jian-by-leetcode-solution/
+class Solution {
+ public:
+  vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+    int left = newInterval[0];
+    int right = newInterval[1];
+    bool placed = false;
+    vector<vector<int>> ans;
+    for (const auto& interval : intervals) {
+      if (interval[0] > right) {
+        // 在插入区间的右侧且无交集
+        if (!placed) {
+          ans.push_back({left, right});
+          placed = true;
+        }
+        ans.push_back(interval);
+      } else if (interval[1] < left) {
+        // 在插入区间的左侧且无交集
+        ans.push_back(interval);
+      } else {
+        // 与插入区间有交集，计算它们的并集
+        left = min(left, interval[0]);
+        right = max(right, interval[1]);
+      }
+    }
+    if (!placed) {
+      ans.push_back({left, right});
+    }
+    return ans;
+  }
+};
+
+// 这个实现超时
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+    int left = newInterval.front();
+    int right = newInterval.back();
+    vector<vector<int>>::iterator it = intervals.begin();
+    while (it != intervals.end()) {
+      if (right < it->front()) {  // 当前区间 在插入区间的右侧且无交集
+        intervals.insert(it, {left, right});
+        return intervals;
+      } else if (left > it->back()) {  // 当前区间 在插入区间的左侧且无交集
+        ++it;
+        continue;
+      } else {  // 与插入区间有交集，计算它们的并集
+        left = min(left, it->front());
+        right = max(right, it->back());
+        it = intervals.erase(it);  // 合并+删除，此处耗时严重
+      }
+    }
+    intervals.insert(intervals.end(), {left, right});
+    return intervals;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/insert-interval/
 // Author : Hao Chen
 // Date   : 2014-08-26

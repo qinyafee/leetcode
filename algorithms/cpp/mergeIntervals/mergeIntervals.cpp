@@ -1,3 +1,27 @@
+// my implm
+// 先排序；比较每个区间的右边界，来合并区间
+// https://leetcode-cn.com/problems/merge-intervals/solution/merge-intervals-by-ikaruga/
+// 时间复杂度：O(nlogn)
+class Solution {
+ public:
+  vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    sort(intervals.begin(), intervals.end()); //先排序
+    vector<vector<int>> ans;
+    for (int i = 0; i < intervals.size();) {
+      int t = intervals[i][1]; // 找右边界
+      int j = i + 1;
+      while (j < intervals.size() && intervals[j][0] <= t) { // j区间左边界<=i区间右边界才能合并
+        t = max(t, intervals[j][1]);
+        j++;
+      }
+      ans.push_back({intervals[i][0], t}); // 因为排序过，左边界确定的
+      i = j;
+    }
+    return ans;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/merge-intervals/
 // Author : Hao Chen
 // Date   : 2014-08-26

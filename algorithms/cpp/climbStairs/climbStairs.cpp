@@ -49,6 +49,8 @@ class Solution {
   //     return dp[n-1];
   // }
 };
+// 爬楼梯变种总结
+// https://blog.csdn.net/wjhshuai/article/details/68952756
 
 // clang-format off
 class Solution {

@@ -46,7 +46,7 @@ class Solution {
       return result;
     }
     for (int i = 0; i < p.size(); i++) {  // pattern
-      v1[p[i] - 'a']++;                   // 'a' = 97
+      v1[p[i] - 'a']++;                   // ascii码: 'a' = 97, 'A'=65
     }
     vector<int> v2(26);
     for (int index = 0; index < s.size(); index++) {

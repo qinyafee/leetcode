@@ -1,3 +1,33 @@
+// my implm
+// 和I几乎一样
+class Solution {
+ public:
+  // 时间复杂度O(n^2)， 空间复杂度O(1)
+  vector<vector<int>> generateMatrix(int n) {
+    vector<vector<int>> matrix(n, vector<int>(n));
+    int num = 0;
+    int beginX = 0, endX = n - 1;
+    int beginY = 0, endY = n - 1;
+    while (true) {
+      // From left to right
+      for (int j = beginX; j <= endX; ++j) matrix[beginY][j] = ++num;
+      if (++beginY > endY) break;  //去掉上行
+      // From top to bottom
+      for (int i = beginY; i <= endY; ++i) matrix[i][endX] = ++num;
+      if (beginX > --endX) break;  //去掉右列
+      // From right to left
+      for (int j = endX; j >= beginX; --j) matrix[endY][j] = ++num;
+      if (beginY > --endY) break;  //去掉下行
+      // From bottom to top
+      for (int i = endY; i >= beginY; --i) matrix[i][beginX] = ++num;
+      if (++beginX > endX) break;  //去掉左列
+    }
+    return matrix;
+  }
+};
+
+// clang-format off
+
 // Source : https://oj.leetcode.com/problems/spiral-matrix-ii/
 // Author : Hao Chen
 // Date   : 2014-06-30
@@ -19,36 +49,6 @@
 * 
 *               
 **********************************************************************************/
-// my implm
-class Solution {
-public:
-    // 时间复杂度O(n^2)， 空间复杂度O(1)
-    vector<vector<int>> generateMatrix(int n) {
-        vector<vector<int> > matrix(n, vector<int>(n));
-        int num = 0;
-        int beginX = 0, endX = n - 1;
-        int beginY = 0, endY = n - 1;
-        while (true) {
-            // From left to right
-            for (int j = beginX; j <= endX; ++j)
-                matrix[beginY][j] = ++num;
-            if (++beginY > endY) break; //去掉上行
-            // From top to bottom
-            for (int i = beginY; i <= endY; ++i)
-                matrix[i][endX] = ++num;
-            if (beginX > --endX) break; //去掉右列
-            // From right to left
-            for (int j = endX; j >= beginX; --j)
-                matrix[endY][j] = ++num;
-            if (beginY > --endY) break; //去掉下行
-            // From bottom to top
-            for (int i = endY; i >= beginY; --i)
-                matrix[i][beginX] = ++num;
-            if (++beginX > endX) break; //去掉左列
-        }
-        return matrix;
-    }
-};
 
 #include <stdio.h>
 #include <stdlib.h>
