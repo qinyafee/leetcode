@@ -1,3 +1,60 @@
+// Minimum Window Substring
+// 双指针， 动态维护一个区间，尾指针不断往后扫。
+// 当扫到有一个窗口包含了所有 T 的字符后，然后再收缩头指针，直到不能再收缩为止。
+// 最后记录所有可能的情况中窗口最小的。
+
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  string minWindow(string s, string t) {
+    if (s.empty()) return "";
+    if (s.size() < t.size()) return "";
+
+    const int ASCII_MAX = 256;  // hash最大值
+    int appeared_count[ASCII_MAX];
+    int expected_count[ASCII_MAX];  // pattern hash
+    fill(appeared_count, appeared_count + ASCII_MAX, 0);
+    fill(expected_count, expected_count + ASCII_MAX, 0);
+    for (size_t i = 0; i < t.size(); i++) {
+      expected_count[t[i]]++;
+    }
+    int minWidth = INT_MAX, min_start = 0;  // 窗口大小， 起点
+    int wnd_start = 0;
+    int appeared = 0;  // 完整包含了一个T
+
+    // 1.尾指针不断往后扫
+    for (size_t wnd_end = 0; wnd_end < s.size(); wnd_end++) {
+      if (expected_count[s[wnd_end]] > 0) {  // t中有该字符，才计数
+        appeared_count[s[wnd_end]]++;
+        if (appeared_count[s[wnd_end]] <= expected_count[s[wnd_end]]) {
+          ++appeared;
+        }
+      }
+      if (appeared == t.size()) {  // 完整包含了一个 t
+
+        // 2.收缩头指针
+
+        while (appeared_count[s[wnd_start]] > expected_count[s[wnd_start]]  // s中该字符计数>t中计数
+               || expected_count[s[wnd_start]] == 0) {                      // t中没有该字符
+          if (expected_count[s[wnd_start]] != 0) { // 除去后者情况
+            appeared_count[s[wnd_start]]--;
+          }
+          wnd_start++;
+        }
+        if (minWidth > (wnd_end - wnd_start + 1)) {  // 取全局最小
+          minWidth = wnd_end - wnd_start + 1;
+          min_start = wnd_start;  // 记录全局最小的新起点
+        }
+      }
+    }
+    if (minWidth == INT_MAX)
+      return "";
+    else
+      return s.substr(min_start, minWidth);
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/minimum-window-substring/
 // Author : Hao Chen
 // Date   : 2014-07-22

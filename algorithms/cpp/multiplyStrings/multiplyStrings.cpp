@@ -1,3 +1,43 @@
+// 由于 num1和num2的乘积的长度为 m+n或者 m+n-1，因此创建长度为m+n的数组用于存储乘积。
+// 对于任意 0≤i<m和 0≤j<n，num1[i]×num2[j] 的结果位于 ansArr[i+j+1]
+// 如果 ansArr[i+j+1]≥10，则将进位部分加到 ansArr[i+j]。
+// https://leetcode-cn.com/problems/multiply-strings/solution/zi-fu-chuan-xiang-cheng-by-leetcode-solution/
+
+// 时间复杂度：O(mn)，空间复杂度：O(m+n)
+class Solution {
+ public:
+  string multiply(string num1, string num2) {
+    if (num1 == "0" || num2 == "0") {
+      return "0";
+    }
+    const int m = num1.size();
+		const int n = num2.size();
+    auto ansArr = vector<int>(m + n, 0);
+    for (int i = m - 1; i >= 0; i--) {
+      int x = num1.at(i) - '0';
+      for (int j = n - 1; j >= 0; j--) {
+        int y = num2.at(j) - '0';
+        ansArr[i + j + 1] += x * y;  // 存储位置
+      }
+    }
+    for (int k = m + n - 1; k > 0; k--) {  //!
+      ansArr[k - 1] += ansArr[k] / 10; // 进位
+      ansArr[k] %= 10;
+    }
+    int index = ansArr[0] == 0 ? 1 : 0;  // 找到首位index
+    string ans;
+    while (index < m + n) {
+      ans.push_back(static_cast<char>(ansArr[index]));  // 转成char
+      index++;
+    }
+    for (auto& c : ans) {
+      c += '0';  // 转成对应的char
+    }
+    return ans;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/multiply-strings/
 // Author : Hao Chen
 // Date   : 2014-07-18

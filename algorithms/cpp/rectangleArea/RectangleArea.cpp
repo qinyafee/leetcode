@@ -1,3 +1,24 @@
+// 根据容斥原理： S(M ∪ N) = S(M) + S(N) - S(M ∩ N)， 最关键的是求出相交部分的面积。
+// 重叠区域计算:
+// 上边界，取两个矩形的上边界的最小值
+// 下边界，取两个矩形的下边界的最大值
+// 左边界，取两个矩形的左边界的最大值
+// 右边界，取两个矩形的右边界的最小值
+// https://leetcode-cn.com/problems/rectangle-area/solution/jian-dan-de-kao-lu-by-powcai/
+// https://leetcode-cn.com/problems/rectangle-area/solution/ju-xing-mian-ji-by-leetcode-solution-xzbl/
+class Solution {
+ public:
+  int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+    int area1 = (ax2 - ax1) * (ay2 - ay1);
+    int area2 = (bx2 - bx1) * (by2 - by1);
+    int overlapWidth = min(ax2, bx2) - max(ax1, bx1);                // 右-左
+    int overlapHeight = min(ay2, by2) - max(ay1, by1);               // 下-上
+    int overlapArea = max(overlapWidth, 0) * max(overlapHeight, 0);  // 负数代表没有overlap
+    return area1 + area2 - overlapArea;
+  }
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/rectangle-area/
 // Author : Hao Chen
 // Date   : 2015-06-12

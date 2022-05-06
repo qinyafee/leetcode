@@ -1,3 +1,31 @@
+// 假设子串里含有重复字符，则父串一定含有重复字符，单个子问题就可以决定父问题，因此可以用贪心法。
+// 动规里，单个子问题只能影响父问题，不足以决定父问题。
+// 从左往右扫描，当遇到重复字母时，以上一个重复字母的 index+1，作为新的搜索起始位置， 直到最后一
+// 个字母，如图所示。
+// 复杂度是 O(n)
+class Solution {
+ public:
+  int lengthOfLongestSubstring(string s) {
+    unordered_map<char, int> lookup;  // char<->index
+    int global = 0;
+    int local = 0;
+    for (int i = 0; i < s.size(); ++i) {
+      auto it = lookup.find(s[i]);
+      if (it == lookup.end()) {
+        ++local;
+        lookup.emplace(s[i], i);
+      } else {
+        i = it->second;  // 找到重复的index，从index+1开始
+        local = 0;
+        lookup.clear(); //! 可以继续优化
+      }
+      global = max(global, local);
+    }
+    return global;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/longest-substring-without-repeating-characters/
 // Author : Hao Chen
 // Date   : 2014-07-19

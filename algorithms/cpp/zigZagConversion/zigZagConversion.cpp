@@ -1,3 +1,27 @@
+// 时间复杂度O(n)， 空间复杂度O(1)
+
+// 对于每一层垂直元素的坐标 (i,j)= (j+1 )*n +i；
+// 对于每两层垂直元素之间的插入元素（斜对角元素），(i,j)= (j+1)*n -i
+ 
+class Solution {
+ public:
+  string convert(string s, int nRows) {
+    if (nRows <= 1 || s.size() <= 1) return s;
+    string result;
+    for (int i = 0; i < nRows; i++) {
+      for (int j = 0, index = i; index < s.size(); j++, index = (2 * nRows - 2) * j + i) {
+        result.append(1, s[index]);              // 垂直元素
+        if (i == 0 || i == nRows - 1) continue;  // 斜对角元素
+        if (index + (nRows - i - 1) * 2 < s.size()){
+          result.append(1, s[index + (nRows - i - 1) * 2]);
+				}
+      }
+    }
+    return result;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/zigzag-conversion/
 // Author : Hao Chen
 // Date   : 2014-07-17

@@ -1,3 +1,30 @@
+// Container With Most Water， 【和42. Trapping Rain Water不一样：这个用单调栈，不限于取两个板】
+// 双指针，限定取两个板子
+// 每个容器的面积， 取决于最短的木板。
+// 时间复杂度O(n)， 空间复杂度O(1)
+class Solution {
+ public:
+  int maxArea(vector<int>& height) {
+    int left = 0;
+    int right = height.size() - 1;
+    int result = INT_MIN;
+    while (left < right) {
+      int area = min(height[right], height[left]) * (right - left);
+      result = max(result, area);
+
+      // height[left] < height[right] ? left++ : right-- ;
+      if (height[left] <= height[right]) {  //! 这个左指针对应的数不会作为容器的边界了
+        left++;
+      } else {
+        right--;
+      }
+    }
+    return result;
+  }
+};
+// 分析：https://leetcode-cn.com/problems/container-with-most-water/solution/sheng-zui-duo-shui-de-rong-qi-by-leetcode-solution/
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/container-with-most-water/
 // Author : Hao Chen
 // Date   : 2014-06-22

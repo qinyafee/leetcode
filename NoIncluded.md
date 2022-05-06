@@ -34,6 +34,8 @@ Dungeon Game
 Maximum Gap 基数排序
 Recover Binary Search Tree
 Patching Array
+Substring with Concatenation of All Words *
+Text Justification
 
 ## 没刷的M
 H-Index II

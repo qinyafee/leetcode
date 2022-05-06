@@ -1,3 +1,29 @@
+//1. 我们可以把该整数对3取对数，如果结果是整数，说明该整数是3的幂。
+class Solution {
+ public:
+  bool isPowerOfThree(int n) {
+    if (n <= 0) return false;  // 异常情况
+
+    double dn = static_cast<double>(n);
+    double res = log10(dn) / log10(3);
+    return (res - static_cast<int>(res) == 0);
+  }
+};
+
+//2. 不断除以3， 看最后能否得到1。
+// https://leetcode-cn.com/problems/power-of-three/solution/3de-mi-by-leetcode-solution-hnap/
+
+class Solution {
+ public:
+  bool isPowerOfThree(int n) {
+    while (n && n % 3 == 0) {
+      n /= 3;
+    }
+    return n == 1;
+  }
+};
+
+// clang-format off
 // Source : https://leetcode.com/problems/power-of-three/
 // Author : Hao Chen
 // Date   : 2016-01-14
