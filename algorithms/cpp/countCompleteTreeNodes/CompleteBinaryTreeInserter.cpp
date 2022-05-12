@@ -1,10 +1,52 @@
+// 222.
 // https://leetcode.cn/problems/count-complete-tree-nodes/solution/wan-quan-er-cha-shu-de-jie-dian-ge-shu-by-leetco-2/
 // 规定根节点位于第 0 层
 // 最大层数为 h 的完全二叉树，节点个数一定在 [2^h,2^(h+1)−1]的范围内,
 // 在该范围内通过二分查找,得到完全二叉树的节点个数
 
-// 时间：O(logn*logn)，证明见链接
-class Solution {
+// 919.
+// https://leetcode.cn/problems/complete-binary-tree-inserter/solution/cshuang-100-shi-xian-o1kong-jian-olognsh-nwm4/
+
+class CBTInserter {
+ private:
+  TreeNode* root_;
+  int size_;
+
+ public:
+  CBTInserter(TreeNode* root) : root_(root) {
+    size_ = countNodes(root);
+  }
+
+  int insert(int val) {
+    TreeNode* node = root_;
+    int idx = ++size_;  // idx: 本次插入结点的编号
+    int _idx = idx;
+    int bits = 0;  // bits: idx的位数
+    while (_idx) {
+      ++bits;
+      _idx >>= 1;
+    }
+
+    --bits;               // idx首位1不需要
+    while (--bits > 0) {  //! bits=1时，--bits=0, 最后一次不进入
+      if (idx & (1 << bits)) {
+        node = node->right;
+      } else {
+        node = node->left;
+      }
+    }
+    if (idx & 1) {
+      node->right = new TreeNode(val);
+    } else {
+      node->left = new TreeNode(val);
+    }
+    return node->val;
+  }
+
+  TreeNode* get_root() {
+    return root_;
+  }
+
  public:
   int countNodes(TreeNode* root) {
     if (root == nullptr) {
@@ -50,54 +92,5 @@ class Solution {
 };
 
 // Source : https://leetcode.com/problems/count-complete-tree-nodes/
-// Author : Hao Chen
-// Date   : 2015-06-12
 
-/**********************************************************************************
- *
- * Given a complete binary tree, count the number of nodes.
- *
- * Definition of a complete binary tree from Wikipedia:
- * http://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees
- *
- * In a complete binary tree every level, except possibly the last, is completely filled,
- * and all nodes in the last level are as far left as possible.
- * It can have between 1 and 2^h nodes inclusive at the last level h.
- *
- **********************************************************************************/
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
- public:
-  // return -1 if it is not.
-  int isCompleteTree(TreeNode* root) {
-    if (!root) return 0;
-
-    int cnt = 1;
-    TreeNode *left = root, *right = root;
-    for (; left && right; left = left->left, right = right->right) {
-      cnt *= 2;
-    }
-
-    if (left != NULL || right != NULL) {
-      return -1;
-    }
-    return cnt - 1;
-  }
-
-  int countNodes(TreeNode* root) {
-    int cnt = isCompleteTree(root);
-    if (cnt != -1) return cnt;
-    int leftCnt = countNodes(root->left);
-    int rightCnt = countNodes(root->right);
-    return leftCnt + rightCnt + 1;
-  }
-};

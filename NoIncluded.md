@@ -23,6 +23,16 @@ https://leetcode-cn.com/problems/map-of-highest-peak/
 
 1254.统计封闭岛屿的数目
 
+919.https://leetcode.cn/problems/complete-binary-tree-inserter
+
+// 并查集 UnionFind
+1319.连通网络的操作次数 // https://leetcode.cn/problems/number-of-operations-to-make-network-connected
+684.https://leetcode.cn/problems/redundant-connection/
+959.由斜杠划分区域 https://leetcode.cn/problems/regions-cut-by-slashes/ [没刷]
+1579.保证图可完全遍历 https://leetcode.cn/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/ [没刷]
+
+
+785. 判断二分图 https://leetcode.cn/problems/is-graph-bipartite/
 
 ## 没刷的H
 Median of Two Sorted Arrays

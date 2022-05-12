@@ -51,6 +51,8 @@ class Solution {
 };
 // 爬楼梯变种总结
 // https://blog.csdn.net/wjhshuai/article/details/68952756
+// 上n个台阶，每次一步或两步，求走法数量，简单DP。
+// 上一题变形，最多只能连续走m次两步。依然DP，dp[i][j]表示到第i级台阶，前面连续走了j次两步的走法数量。写出转移方程，面试官没有让写代码。
 
 // clang-format off
 class Solution {
