@@ -1,3 +1,39 @@
+// my impl
+class Solution {
+ public:
+  int searchInsert(vector<int>& nums, int target) {
+    //用stl
+    auto it = std::lower_bound(nums.begin(), nums.end(), target);
+    return std::distance(nums.begin(), it);
+  }
+
+	// 自己实现的
+  template <typename ForwardIterator, typename T>
+  ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last, T value) {
+    while (first != last) {
+      auto mid = next(first, distance(first, last) / 2);
+      if (value > *mid)
+        first = ++mid;
+      else
+        last = mid;
+    }
+    return first;
+  }
+
+  template <typename ForwardIterator, typename T>
+  ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last, T value) {
+    while (first != last) {
+      auto mid = next(first, distance(first, last) / 2);
+      if (value >= *mid)
+        first = ++mid;  // 与 lower_bound 仅此不同
+      else
+        last = mid;
+    }
+    return first;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/search-insert-position/
 // Author : Hao Chen
 // Date   : 2014-06-22
@@ -20,15 +56,6 @@
 
 #include <stdio.h>
 
-//my impl
-class Solution {
-public:
-	int searchInsert(vector<int>& nums, int target) {
-		//用stl
-		auto it = std::lower_bound(nums.begin(), nums.end(), target);
-			return std::distance(nums.begin(), it);
-	}
-};
 
 int binary_search(int A[], int n, int key) {
     int low = 0;

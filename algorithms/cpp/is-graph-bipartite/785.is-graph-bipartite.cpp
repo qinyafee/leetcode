@@ -75,3 +75,67 @@ class Solution {
 };
 
 // 3.并查集
+
+class UnionFind {
+ private:
+  vector<int> parent;
+  vector<int> counts;  // 每个连通分量的节点数
+  int nTotal;          // 总节点个数
+  // 当前连通分量的数目
+  int nComponents;
+
+ public:
+  UnionFind(int _n) : nTotal(_n), nComponents(_n), parent(_n), counts(_n, 1) {
+    std::iota(parent.begin(), parent.end(), 0);  //! 用法
+  }
+
+  // int find(int x) {
+  //   return parent[x] == x ? x : parent[x] = find(parent[x]);
+  // }
+  int find(int a) {
+    while (a != parent[a]) {  //根节点的特点 parent[a] == a
+      a = parent[a];
+    }
+    return a;
+  }
+
+  bool unite(int x, int y) {
+    x = find(x);
+    y = find(y);
+    if (x == y) {
+      return false;
+    }
+    if (counts[x] < counts[y]) {  //保证短的挂到长的
+      swap(x, y);
+    }
+    parent[y] = x;
+    counts[x] += counts[y];
+    --nComponents;  // 每次merge，联通分量-1
+    return true;
+  }
+
+  bool isConnected(int x, int y) {
+    x = find(x);
+    y = find(y);
+    return x == y;
+  }
+};
+
+class Solution {
+ public:
+  bool isBipartite(vector<vector<int>>& graph) {
+    UnionFind uf(graph.size());
+    // 遍历每个顶点，将当前顶点的所有邻接点进行合并
+    for (int v = 0; v < graph.size(); ++v) {
+      const auto& adjs = graph[v];
+      for (auto w : adjs) {
+        // 若某个邻接点与当前顶点已经在一个集合中了，说明不是二分图
+        if (uf.isConnected(v, w)) {
+          return false;
+        }
+        uf.unite(adjs.front(), w);
+      }
+    }
+    return true;
+  }
+};

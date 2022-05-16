@@ -1,3 +1,24 @@
+// https://leetcode.cn/problems/swap-nodes-in-pairs/solution/liang-liang-jiao-huan-lian-biao-zhong-de-jie-di-91/
+// my implm
+class Solution {
+ public:
+  ListNode* swapPairs(ListNode* head) {
+    ListNode dummy(-1);
+    dummy.next = head;
+    ListNode* prev = &dummy;
+    while (prev->next != nullptr && prev->next->next != nullptr) {
+      ListNode* curr = prev->next;
+      ListNode* tail = prev->next->next;
+      prev->next = tail;
+      curr->next = tail->next;  //!
+      tail->next = curr;
+      prev = curr;
+    }
+    return dummy.next;
+  }
+};
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/swap-nodes-in-pairs/
 // Author : Hao Chen
 // Date   : 2014-06-22

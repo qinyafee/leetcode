@@ -9,7 +9,7 @@
 class UnionFind {
  public:
   vector<int> parent;
-  vector<int> size;
+  vector<int> size; // 每个连通分量的节点数
   int n;
   // 当前连通分量数目
   int setCount;
@@ -22,6 +22,12 @@ class UnionFind {
   int findset(int x) {
     return parent[x] == x ? x : parent[x] = findset(parent[x]);
   }
+  // int find(int a) {
+  //   while (a != parent[a]) {  //根节点的特点 parent[a] == a
+  //     a = parent[a];
+  //   }
+  //   return a;
+  // }
 
   bool unite(int x, int y) {
     x = findset(x);

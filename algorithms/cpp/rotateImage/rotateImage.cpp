@@ -1,3 +1,30 @@
+
+// method1, 首先沿着副对角线翻转一次， 然后沿着水平中线翻转一次。
+// method2, 或者， 首先沿着水平中线翻转一次， 然后沿着主对角线翻转一次。
+
+// method1， 时间复杂度O(n^2)， 空间复杂度O(1)
+class Solution {
+ public:
+  void rotate(vector<vector<int>>& matrix) {
+    const int n = matrix.size();
+    for (int i = 0; i < n; ++i)  // 沿着副对角线反转
+    {
+      for (int j = 0; j < n - i; ++j) {
+        swap(matrix[i][j], matrix[n - 1 - j][n - 1 - i]);
+      }
+    }
+    for (int i = 0; i < n / 2; ++i)  // 沿着水平中线反转
+    {
+      for (int j = 0; j < n; ++j) {
+        swap(matrix[i][j], matrix[n - 1 - i][j]);
+      }
+    }
+  }
+};
+
+// method2
+
+// clang-format off
 // Source : https://oj.leetcode.com/problems/rotate-image/
 // Author : Hao Chen
 // Date   : 2014-06-27
