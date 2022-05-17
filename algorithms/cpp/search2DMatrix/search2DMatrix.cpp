@@ -25,6 +25,7 @@
  **********************************************************************************/
 
 // my implm
+// 二分查找。
 class Solution {
  public:
   bool searchMatrix(vector<vector<int>>& matrix, int target) {

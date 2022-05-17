@@ -47,7 +47,9 @@ class Solution {
           vector<pair<int, int>> path;
           bool connect_to_edge = false;
           dfs(board, path, i, j, connect_to_edge);
-          if (!connect_to_edge) to_be_filled.push_back(path);
+          if (!connect_to_edge) {
+            to_be_filled.push_back(path);
+          }
         }
       }
     }
@@ -58,8 +60,10 @@ class Solution {
     }
     for (int i = 0; i < board.size(); ++i) {
       for (int j = 0; j < board[0].size(); ++j) {
-      if(board[i][j] == 'V') board[i][j] = 'O';
-			}
+        if (board[i][j] == 'V') {
+          board[i][j] = 'O';
+        }
+      }
     }
   }
   void dfs(vector<vector<char>>& board, vector<pair<int, int>>& path, int r, int c,
@@ -71,7 +75,7 @@ class Solution {
     if (board[r][c] != 'O') return;  //!注意，此行在inArea之后
 
     path.emplace_back(r, c);
-    board[r][c] = 'V'; // 只有 'O' --> 'V'
+    board[r][c] = 'V';  // 只有 'O' --> 'V'
     for (const auto& dir : dirs) {
       dfs(board, path, r + dir[0], c + dir[1], connect_to_edge);
     }
