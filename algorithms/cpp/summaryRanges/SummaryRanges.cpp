@@ -1,55 +1,82 @@
+// 双指针
+// 维护下标 low 和 high 分别记录区间的起点和终点,
+// low<high, 区间的字符串表示为 "low->high"
+// low=high, 区间的字符串表示为 "low"
+class Solution {
+ public:
+  vector<string> summaryRanges(vector<int>& nums) {
+    vector<string> ret;
+    int i = 0;
+    const int n = nums.size();
+    while (i < n) {
+      int low = i;
+      i++;
+      while (i < n && nums[i] == nums[i - 1] + 1) {  //不满足时，记录一个区间
+        i++;
+      }
+      int high = i - 1;
+      string temp = to_string(nums[low]);
+      if (low < high) {
+        temp.append("->");
+        temp.append(to_string(nums[high]));
+      }
+      ret.push_back(move(temp));
+    }
+    return ret;
+  }
+};
+
 // Source : https://leetcode.com/problems/summary-ranges/
 // Author : Hao Chen
 // Date   : 2015-07-03
 
-/********************************************************************************** 
- * 
+/**********************************************************************************
+ *
  * Given a sorted integer array without duplicates, return the summary of its ranges.
- * 
+ *
  * For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
- * 
- * Credits:Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
- *               
+ *
+ * Credits:Special thanks to @jianchao.li.fighter for adding this problem and creating all test
+ *cases.
+ *
  **********************************************************************************/
 
-
 class Solution {
-public:
-    string makeRange(int start, int end) {
-        ostringstream oss;
-        if (start != end) {
-            oss << start << "->" << end;
-        } else {
-            oss << start;
-        }
-        return oss.str();
+ public:
+  string makeRange(int start, int end) {
+    ostringstream oss;
+    if (start != end) {
+      oss << start << "->" << end;
+    } else {
+      oss << start;
     }
-    
-    vector<string> summaryRanges(vector<int>& nums) {
-        vector<string> result;
-        int len = nums.size();
-        if (len == 0) return result;
-        
-        // we have two pointer for range-starter and range-ender
-        int start=nums[0], end=nums[0];
+    return oss.str();
+  }
 
-        for (int i=1; i<len; i++) {
-            // if it is continous number, move the end pointer;
-            if (nums[i] == end + 1) {
-                end = nums[i];
-                continue;
-            }
-            
-            //if the number is not continous, push the range into result
-            //and reset the start and end pointer
-            result.push_back(makeRange(start, end));
-            start = end = nums[i];
-        
-        }
-        
-        //for the last range
-        result.push_back(makeRange(start, end)); 
-        
-        return result;
+  vector<string> summaryRanges(vector<int>& nums) {
+    vector<string> result;
+    int len = nums.size();
+    if (len == 0) return result;
+
+    // we have two pointer for range-starter and range-ender
+    int start = nums[0], end = nums[0];
+
+    for (int i = 1; i < len; i++) {
+      // if it is continous number, move the end pointer;
+      if (nums[i] == end + 1) {
+        end = nums[i];
+        continue;
+      }
+
+      // if the number is not continous, push the range into result
+      // and reset the start and end pointer
+      result.push_back(makeRange(start, end));
+      start = end = nums[i];
     }
+
+    // for the last range
+    result.push_back(makeRange(start, end));
+
+    return result;
+  }
 };

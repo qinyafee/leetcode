@@ -39,7 +39,7 @@
 class Solution {
  public:
   // my impl
-	// 递归
+  // 递归
   TreeNode* invertTree(TreeNode* root) {
     if (!root) return root;
     TreeNode* tmp = root->left;

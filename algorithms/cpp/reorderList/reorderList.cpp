@@ -12,7 +12,7 @@ class Solution {
       fast = fast->next->next;
     }
     prev->next = nullptr;  // cut at middle
-    slow = reverse(slow);
+    slow = reverseList(slow);
     // merge two lists
     ListNode* curr = head;
     while (curr->next) {
@@ -24,14 +24,16 @@ class Solution {
     }
     curr->next = slow;
   }
-  ListNode* reverse(ListNode* head) {
-    if (head == nullptr || head->next == nullptr) return head;
-    ListNode* prev = head;
-    for (ListNode *curr = head->next, *next = curr->next; curr;
-         prev = curr, curr = next, next = next ? next->next : nullptr) {
-      curr->next = prev;
+  ListNode* reverseList(ListNode* head) {
+    ListNode* prev = NULL;
+    ListNode* cur = head;
+    ListNode* tail = NULL;
+    while (cur != NULL) {
+      tail = cur->next;  //设置下一个节点
+      cur->next = prev;  //当前节点指向上一个节点，反转
+      prev = cur;        //上一个节点设置成当前节点
+      cur = tail;        //处理下一个节点
     }
-    head->next = nullptr;
     return prev;
   }
 };

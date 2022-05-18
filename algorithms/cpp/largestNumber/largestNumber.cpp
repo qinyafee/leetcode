@@ -14,9 +14,10 @@
  *
  **********************************************************************************/
 // my implm
-// 我们可以根据「结果」来决定 aaa 和 bbb 的排序关系：
+// 我们可以根据「结果」来决定 a 和 b 的排序关系：
 // 如果拼接结果 ab 要比 ba 好，那么我们会认为 a 应该放在 b 前面。
-
+// 另外，注意我们需要处理前导零（最多保留一位）。
+// https://leetcode.cn/problems/largest-number/solution/gong-shui-san-xie-noxiang-xin-ke-xue-xi-vn86e/
 class Solution {
  public:
   // compare function

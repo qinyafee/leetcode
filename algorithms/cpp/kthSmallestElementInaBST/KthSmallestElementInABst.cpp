@@ -1,5 +1,5 @@
 // my implm
-// 中序遍历
+// 1. 中序遍历， 即可以得到递增序列，从而可以找到第k大的元素。 时间复杂度 O(k) 。
 class Solution {
  public:
   int kthSmallest(TreeNode* root, int k) {

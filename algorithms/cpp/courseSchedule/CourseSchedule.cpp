@@ -7,6 +7,8 @@
 // 如果图 G 是有向无环图，那么它的拓扑排序可能不止一种。极端例子：图中都是孤立节点。
 
 // dfs
+// 深度搜索,
+// 当每个节点进行回溯的时候，我们把该节点放入栈中。最终从栈顶到栈底的序列就是一种拓扑排序。
 class Solution {
   // 邻接表存DAG
   vector<vector<int>> neighbours;
@@ -45,18 +47,26 @@ class Solution {
 
     //建图
     for (const auto& item : prerequisites) {
-      neighbours[item[1]].push_back(item[0]);  //注意边的方向
+      neighbours[item[1]].push_back(item[0]);  //! 注意边的方向
     }
     // 每次挑选一个「未搜索」的节点，开始进行深度优先搜索
     for (int u = 0; u < visited.size(); ++u) {
-      if (has_cycle) return false;
-      if (visited[u] == 0) dfs(u);
+      if (has_cycle) {
+        return false;
+      }
+      if (visited[u] == 0) {
+        dfs(u);
+      }
     }
     return !has_cycle;
   }
 };
 
 // bfs
+// 深度优先搜索是一种「逆向思维」：最先被放入栈中的节点是在拓扑排序中最后面的节点。
+// 我们也可以使用正向思维，顺序地生成拓扑排序:
+// 1.将所有入度=0 的节点都被放入队列中，它们就是可以作为拓扑排序最前面的节点
+// 2.取出队首的节点u，将 u 的所有相邻节点的入度减少 1。如果入度=0，入队。
 class Solution {
  public:
   bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
@@ -76,7 +86,9 @@ class Solution {
     int visited = 0;
     // 将所有入度为 0 的节点放入队列中
     for (int u = 0; u < indeg.size(); ++u) {
-      if (indeg[u] == 0) que.push(u);
+      if (indeg[u] == 0) {
+        que.push(u);
+      }
     }
     while (!que.empty()) {
       // 从队首取出一个节点
@@ -86,7 +98,9 @@ class Solution {
       for (const auto& v : neighbours[u]) {
         --indeg[v];
         // 如果相邻节点 v 的入度为 0，就可以选 v 对应的课程了
-        if (indeg[v] == 0) que.push(v);
+        if (indeg[v] == 0) {
+          que.push(v);
+        }
       }
     }
     return visited == numCourses;

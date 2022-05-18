@@ -1,23 +1,10 @@
+// https://leetcode.cn/problems/reverse-linked-list-ii/solution/fan-zhuan-lian-biao-ii-by-leetcode-solut-teyq/
+// 第 1 步：先将待反转的区域反转；
+// 第 2 步：把 pre 的 next 指针指向反转以后的链表头节点，把反转以后的链表的尾节点的 next 指针指向 succ。
+
 // Source : https://oj.leetcode.com/problems/reverse-linked-list-ii/
 // Author : Hao Chen
 // Date   : 2014-07-05
-
-// my implm
-class Solution {
- public:
-  ListNode* reverseList(ListNode* head) {
-    ListNode* prev = NULL;
-    ListNode* cur = head;
-    ListNode* tail = NULL;
-    while (cur != NULL) {
-      tail = cur->next;  //设置下一个节点
-      cur->next = prev;  //当前节点指向上一个节点，反转
-      prev = cur;        //上一个节点设置成当前节点
-      cur = tail;        //处理下一个节点
-    }
-    return prev;
-  }
-};
 
 /**********************************************************************************
  *

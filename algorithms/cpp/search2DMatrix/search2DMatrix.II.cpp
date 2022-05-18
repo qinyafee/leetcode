@@ -1,19 +1,64 @@
+
+// my impl
+// 从右上角开始, 比较 target 和 matrix[i][j] 的值。
+// 如果小于 target , 则该行不可能有此数, 以 i++ ;
+// 如果大于 target , 则该列不可能有此数, 所以 j-- 。
+// 遇到边界则表明该矩阵不含 target .
+// 时间复杂度：O(n+m)。
+// 空间复杂度：O(1)
+class Solution {
+ public:
+  bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int rows = matrix.size();
+    if (rows == 0) return false;
+    int cols = matrix[0].size();
+    if (cols == 0)  // 空数组无法通过
+      return false;
+
+    // 从左下角开始
+    int i = rows - 1;
+    int j = 0;
+    while (i >= 0 && j < cols) {
+      if (matrix[i][j] > target)
+        --i;
+      else if (matrix[i][j] < target)
+        ++j;
+      else
+        return true;
+    }
+    return false;
+  }
+
+  //右上角
+  /*int i = 0;
+  int j = cols - 1;
+  while (i < rows && j >= 0) {
+    if (matrix[i][j] > target)
+      --j;
+    else if (matrix[i][j] < target)
+      ++i;
+    else
+      return true;
+  }
+  return false;*/
+};
+
 // Source : https://leetcode.com/problems/search-a-2d-matrix-ii/
 // Author : Hao Chen
 // Date   : 2015-08-15
 
-/********************************************************************************** 
- * 
- * Write an efficient algorithm that searches for a value in an m x n matrix. This 
+/**********************************************************************************
+ *
+ * Write an efficient algorithm that searches for a value in an m x n matrix. This
  * matrix has the following properties:
- * 
+ *
  * Integers in each row are sorted in ascending from left to right.
  * Integers in each column are sorted in ascending from top to bottom.
- * 
+ *
  * For example,
- * 
+ *
  * Consider the following matrix:
- * 
+ *
  * [
  *   [1,   4,  7, 11, 15],
  *   [2,   5,  8, 12, 19],
@@ -21,169 +66,119 @@
  *   [10, 13, 14, 17, 24],
  *   [18, 21, 23, 26, 30]
  * ]
- * 
+ *
  * Given target = 5, return true.
  * Given target = 20, return false.
- *               
- *               
- * 
- *               
+ *
+ *
+ *
+ *
  **********************************************************************************/
 
-//my impl
-// 时间复杂度：O(n+m)。
-// 空间复杂度：O(1)
 class Solution {
-public:
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-      int rows = matrix.size();
-      if(rows==0)
-          return false;
-      int cols = matrix[0].size();
-      if(cols==0) // 空数组无法通过
-          return false;      
-       
-      //左下角
-      int i = rows - 1; 
-      int j = 0;
-      while(i >=0 && j < cols){
-        if(matrix[i][j] > target)
-            --i;
-        else if(matrix[i][j] < target)
-            ++j;
-        else
-            return true;
+ public:
+  bool binary_search(vector<int>& v, int target) {
+    int low = 0;
+    int high = v.size() - 1;
+    while (low <= high) {
+      int mid = low + (high - low) / 2;
+      if (target == v[mid]) return true;
+      if (target < v[mid]) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
       }
-      return false;
     }
 
-      
-      //右上角
-/*      int i = 0; 
-      int j = cols - 1;
-      while(i <rows && j >=0){
-        if(matrix[i][j] > target)
-            --j;
-        else if(matrix[i][j] < target)
-            ++i;
-        else
-            return true;
+    return false;
+  }
+
+  // using binary_search() to search each rows - slow O(n*log(n))
+  // the run time is around 140ms for all test case
+  bool searchMatrix01(vector<vector<int>>& matrix, int target) {
+    if (matrix.size() == 0 || matrix[0].size() == 0) return false;
+    for (int i = 0; i < matrix.size(); i++) {
+      if (target < matrix[i][0]) return false;
+      if (binary_search(matrix[i], target)) return true;
+    }
+    return false;
+  }
+
+  // start the liner search from top right corner of matrix. - O(m+n)
+  // the run time is around 64ms
+  bool searchMatrix02(vector<vector<int>>& matrix, int target) {
+    if (matrix.size() == 0 || matrix[0].size() == 0) return false;
+    int row = 0, col = matrix[0].size() - 1;
+    while (row < matrix.size() && col >= 0) {
+      if (target == matrix[row][col]) return true;
+      if (target < matrix[row][col]) {
+        col--;
+      } else {
+        row++;
       }
-      return false;*/    
-};
+    }
+    return false;
+  }
 
-class Solution {
-public:
-    
-    bool binary_search(vector<int> &v, int target) {
-        int low = 0;
-        int high = v.size()-1;
-        while(low <= high) {
-            int mid = low + (high - low)/2;
-            if (target == v[mid]) return true;
-            if (target < v[mid]) {
-                high = mid -1;
-            }else {
-                low = mid + 1;
-            }
-        }
-        
-        return false;
+  // a bit optimization for methed 2 - the run time is 68ms
+  bool searchMatrix021(vector<vector<int>>& matrix, int target) {
+    if (matrix.size() == 0 || matrix[0].size() == 0) return false;
+    int row = 0, col = matrix[0].size() - 1;
+    while (row < matrix.size() && col >= 0) {
+      if (target == matrix[row][col]) return true;
+      while (col >= 0 && target < matrix[row][col]) {
+        col--;
+      }
+      while (col >= 0 && row < matrix.size() && target > matrix[row][col]) {
+        row++;
+      }
     }
-    
-    //using binary_search() to search each rows - slow O(n*log(n))
-    //the run time is around 140ms for all test case
-    bool searchMatrix01(vector<vector<int>>& matrix, int target) {
-        if (matrix.size() == 0 || matrix[0].size()==0) return false;
-        for (int i=0; i<matrix.size(); i++){
-            if (target < matrix[i][0] ) return false;
-            if (binary_search(matrix[i], target))  return true;
+    return false;
+  }
 
-        }
-        return false;
-    }
-    
-    
-    //start the liner search from top right corner of matrix. - O(m+n)
-    //the run time is around 64ms
-    bool searchMatrix02(vector<vector<int>>& matrix, int target) {
-        if (matrix.size() == 0 || matrix[0].size()==0) return false;
-        int row=0,  col = matrix[0].size() - 1; 
-        while (row < matrix.size() && col >=0 ) {
-            if (target == matrix[row][col]) return true;
-            if (target < matrix[row][col]) {
-                col--;
-            }else{
-                row++;
-            }
-            
-        }
-        return false;
-    }
-    
-    //a bit optimization for methed 2 - the run time is 68ms
-    bool searchMatrix021(vector<vector<int>>& matrix, int target) {
-        if (matrix.size() == 0 || matrix[0].size()==0) return false;
-        int row=0,  col = matrix[0].size() - 1; 
-        while (row < matrix.size() && col >=0 ) {
-            if (target == matrix[row][col]) return true;
-            while ( col>=0 && target < matrix[row][col]) {
-                col--;
-            }
-            while(col >=0 && row < matrix.size() && target > matrix[row][col]){
-                row++;
-            }
-            
-        }
-        return false;
-    }
+  // Optimization: using binary search methed to move `low` and `row`
+  // However, the run time is 112ms
+  bool searchMatrix022(vector<vector<int>>& matrix, int target) {
+    if (matrix.size() == 0 || matrix[0].size() == 0) return false;
 
-    //Optimization: using binary search methed to move `low` and `row` 
-    //However, the run time is 112ms
-    bool searchMatrix022(vector<vector<int>>& matrix, int target) {
-        if (matrix.size() == 0 || matrix[0].size()==0) return false;
-        
-        int row=0,  col = matrix[0].size() - 1; 
-        
-        while (row < matrix.size() && col >=0 ) {
-            
-            if (target == matrix[row][col]) return true;
-            
-            if (target < matrix[row][col]) {
-                int start=0, end=col;
-                while(start <= end){
-                    int mid = start + (end - start)/2;
-                    if (target == matrix[row][mid]) return true;
-                    if (target > matrix[row][mid]) {
-                        start = mid + 1;
-                    }else {
-                        end = mid - 1;
-                    }
-                }
-                col = end; 
-            }else{
-                int start=row, end=matrix.size()-1;
-                while(start<=end){
-                    int mid = start + (end - start)/2;
-                    if (target == matrix[mid][col]) return true;
-                    if (target > matrix[mid][col]) {
-                        start = mid + 1;
-                    }else{
-                        end = mid -1;
-                    }
-                }
-                row = start;
-            }
-            
+    int row = 0, col = matrix[0].size() - 1;
+
+    while (row < matrix.size() && col >= 0) {
+      if (target == matrix[row][col]) return true;
+
+      if (target < matrix[row][col]) {
+        int start = 0, end = col;
+        while (start <= end) {
+          int mid = start + (end - start) / 2;
+          if (target == matrix[row][mid]) return true;
+          if (target > matrix[row][mid]) {
+            start = mid + 1;
+          } else {
+            end = mid - 1;
+          }
         }
-        return false;
+        col = end;
+      } else {
+        int start = row, end = matrix.size() - 1;
+        while (start <= end) {
+          int mid = start + (end - start) / 2;
+          if (target == matrix[mid][col]) return true;
+          if (target > matrix[mid][col]) {
+            start = mid + 1;
+          } else {
+            end = mid - 1;
+          }
+        }
+        row = start;
+      }
     }
-    
-    
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        return searchMatrix022(matrix, target); //112ms
-        return searchMatrix021(matrix, target); //68ms
-        return searchMatrix02(matrix, target); //64ms
-        return searchMatrix01(matrix, target); //148ms
-    }
+    return false;
+  }
+
+  bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    return searchMatrix022(matrix, target);  // 112ms
+    return searchMatrix021(matrix, target);  // 68ms
+    return searchMatrix02(matrix, target);   // 64ms
+    return searchMatrix01(matrix, target);   // 148ms
+  }
 };

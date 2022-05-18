@@ -2,40 +2,41 @@
 // Author : Hao Chen
 // Date   : 2015-03-30
 
-/********************************************************************************** 
-* 
-* Rotate an array of n elements to the right by k steps.
-* For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4]. 
-* 
-* Note:
-* Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
-* 
-* Hint:
-* Could you do it in-place with O(1) extra space?
-* 
-* Related problem: Reverse Words in a String II
-* 
-* Credits:Special thanks to @Freezen for adding this problem and creating all test cases.
-*               
-**********************************************************************************/
+/**********************************************************************************
+ *
+ * Rotate an array of n elements to the right by k steps.
+ * For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
+ *
+ * Note:
+ * Try to come up as many solutions as you can, there are at least 3 different ways to solve this
+ *problem.
+ *
+ * Hint:
+ * Could you do it in-place with O(1) extra space?
+ *
+ * Related problem: Reverse Words in a String II
+ *
+ * Credits:Special thanks to @Freezen for adding this problem and creating all test cases.
+ *
+ **********************************************************************************/
 // my implm
-// 先将数组分为两段， 前 n-k 个为一段， 后 k 个元素作为第二段。【注意k取模】
+// 先将数组分为两段，前 n-k 个为一段，后 k 个元素作为第二段。【注意k取模】
 // 将第一段reverse, 第二段reverse, 然后将整个数组reverse, 这样经过三轮reverse，就完成了循环右移。
-// 时间复杂度 O(n)， 空间复杂度 O(1) 
+// 时间复杂度 O(n)， 空间复杂度 O(1)
 class Solution {
-public:
-    void rotate(vector<int>& nums, int k) {
-        const int n = nums.size();
-        k = k % n; //注意
-        myReverse(nums, 0, n-k-1);
-        myReverse(nums, n-k, n-1);
-        myReverse(nums, 0, n-1);
+ public:
+  void rotate(vector<int>& nums, int k) {
+    const int n = nums.size();
+    k = k % n;  //!注意
+    myReverse(nums, 0, n - k - 1);
+    myReverse(nums, n - k, n - 1);
+    myReverse(nums, 0, n - 1);
+  }
+  void myReverse(vector<int>& nums, int start, int end) {
+    while (start < end) {
+      std::swap(nums[start++], nums[end--]);
     }
-    void myReverse(vector<int>& nums, int start, int end){
-        while(start < end){
-            std::swap(nums[start++], nums[end--]);
-        }
-    }
+  }
 };
 
 #include <stdlib.h>
@@ -43,14 +44,13 @@ public:
 #include <iostream>
 using namespace std;
 
-
-void reverseArray(int nums[],int start, int end){
-    int temp;
-    while(start < end){
-        int temp = nums[start];
-        nums[start++] = nums[end];
-        nums[end--] = temp;
-    }
+void reverseArray(int nums[], int start, int end) {
+  int temp;
+  while (start < end) {
+    int temp = nums[start];
+    nums[start++] = nums[end];
+    nums[end--] = temp;
+  }
 }
 
 /*
@@ -60,83 +60,79 @@ void reverseArray(int nums[],int start, int end){
  */
 
 void rotate1(int nums[], int n, int k) {
-    if (k<=0) return;
-    k %= n; 
-    reverseArray(nums, n-k, n-1);
-    reverseArray(nums, 0, n-k-1);
-    reverseArray(nums, 0, n-1);    
+  if (k <= 0) return;
+  k %= n;
+  reverseArray(nums, n - k, n - 1);
+  reverseArray(nums, 0, n - k - 1);
+  reverseArray(nums, 0, n - 1);
 }
 
 /*
  * How to change [0,1,2,3,4,5,6] to [4,5,6,0,1,2,3] by k = 3?
  *
- * We can change by following rules: 
+ * We can change by following rules:
  *
  *     [0]->[3], [3]->[6], [6]->[2],  [2]->[5], [5]->[1], [1]->[4]
- *    
+ *
  *
  */
 void rotate2(int nums[], int n, int k) {
-    if (k<=0) return;
-    k %= n;
-    int currIdx=0, newIdx=k;
-    int tmp1 = nums[currIdx], tmp2; 
-    int origin = 0;
+  if (k <= 0) return;
+  k %= n;
+  int currIdx = 0, newIdx = k;
+  int tmp1 = nums[currIdx], tmp2;
+  int origin = 0;
 
-    for(int i=0; i<n; i++){
+  for (int i = 0; i < n; i++) {
+    tmp2 = nums[newIdx];
+    nums[newIdx] = tmp1;
+    tmp1 = tmp2;
 
-        tmp2 = nums[newIdx];
-        nums[newIdx] = tmp1;
-        tmp1 = tmp2; 
+    currIdx = newIdx;
 
-        currIdx = newIdx;
-
-        //if we meet a circle, move the next one
-        if (origin == currIdx) {
-            origin = ++currIdx;
-            tmp1 = nums[currIdx];
-        }
-        newIdx = (currIdx + k) % n;
-
-    } 
+    // if we meet a circle, move the next one
+    if (origin == currIdx) {
+      origin = ++currIdx;
+      tmp1 = nums[currIdx];
+    }
+    newIdx = (currIdx + k) % n;
+  }
 }
 
 void rotate(int nums[], int n, int k) {
-    if (random()%2==0) {
-        cout << "[1] ";
-        return rotate1(nums, n, k);
-    }
-    cout << "[2] ";
-    return rotate2(nums, n, k);
+  if (random() % 2 == 0) {
+    cout << "[1] ";
+    return rotate1(nums, n, k);
+  }
+  cout << "[2] ";
+  return rotate2(nums, n, k);
 }
 
 void printArray(int nums[], int n) {
-    cout << "[ " ;
-    for(int i=0; i<n; i++) {
-        cout << nums[i] << ((i==n-1)? " " : ", ");
-    }
-    cout << "]" << endl;
+  cout << "[ ";
+  for (int i = 0; i < n; i++) {
+    cout << nums[i] << ((i == n - 1) ? " " : ", ");
+  }
+  cout << "]" << endl;
 }
 
 void initArray(int nums[], int n) {
-    for(int i=0; i<n; i++) {
-        nums[i] = i;
-    }
+  for (int i = 0; i < n; i++) {
+    nums[i] = i;
+  }
 }
 
+int main(int argc, char** argv) {
+  srand(time(0));
 
-int main(int argc, char**argv) {
-    
-    srand(time(0));
+  int nums[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    int nums[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  const int n = sizeof(nums) / sizeof(int);
 
-    const int n = sizeof(nums)/sizeof(int);
-
-    for (int i=0; i<n; i++) {
-        initArray(nums, n);
-        rotate(nums, n, i);
-        printArray(nums, n);
-    }
-    return 0;
+  for (int i = 0; i < n; i++) {
+    initArray(nums, n);
+    rotate(nums, n, i);
+    printArray(nums, n);
+  }
+  return 0;
 }
