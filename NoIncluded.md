@@ -77,3 +77,7 @@ Minimum Depth of Binary Tree
 
 ## not leet
 位图BitMap
+
+
+## 不常见的
+|820|[Short Encoding of Words] 字典树/trie树

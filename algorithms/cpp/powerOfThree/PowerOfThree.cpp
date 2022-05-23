@@ -23,7 +23,6 @@ class Solution {
   }
 };
 
-// clang-format off
 // Source : https://leetcode.com/problems/power-of-three/
 // Author : Hao Chen
 // Date   : 2016-01-14
