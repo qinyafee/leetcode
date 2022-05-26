@@ -21,7 +21,7 @@
  * };
  */
 
-// my implm
+// my implm Floyd 判圈算法
 // 分析见：
 // https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-ii-by-leetcode-solution/
 class Solution {
