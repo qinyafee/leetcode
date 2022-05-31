@@ -18,7 +18,7 @@ islands
 200.695.463.827.islands
 200.https://leetcode-cn.com/problems/number-of-islands/
 
-1765. 地图中的最高点
+1765.地图中的最高点
 https://leetcode-cn.com/problems/map-of-highest-peak/
 
 1254.统计封闭岛屿的数目
@@ -32,7 +32,10 @@ https://leetcode-cn.com/problems/map-of-highest-peak/
 1579.保证图可完全遍历 https://leetcode.cn/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/ [没刷]
 
 
-785. 判断二分图 https://leetcode.cn/problems/is-graph-bipartite/
+判断二分图 https://leetcode.cn/problems/is-graph-bipartite/
+
+1143.最长公共子序列
+
 
 ## 没刷的H
 Median of Two Sorted Arrays
@@ -63,8 +66,8 @@ Unique Binary Search Trees
 Unique Binary Search Trees II
 
 
-Restore IP Addresses 回溯
-
+977.有序数组的平方
+343.整数拆分
 ## 需要再熟悉的
 Decode Ways
 Range Sum Query - Mutable 线段树/树状数组，+1

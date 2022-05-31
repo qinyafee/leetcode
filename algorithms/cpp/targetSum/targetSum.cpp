@@ -24,22 +24,22 @@ class Solution {
 };
 
 // method2: 动态规划
-// 记数组的元素和为sum，添加- 号的元素之和为 neg，则其余添加 + 的元素之和为 sum−neg，得到的表达式的结果为
-// (sum−neg)−neg=sum−2⋅neg=target
-// 即 neg=(sum−target)/2
+// 记数组的元素和为sum，添加- 号的元素之和为 neg，则其余添加 + 的元素之和为
+// sum−neg，得到的表达式的结果为 (sum−neg)−neg=sum−2⋅neg=target 即 neg=(sum−target)/2
 
-// 定义二维数组 dp，其中 dp[i][j] 表示在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数。假设数组 nums 的长度为 n，则最终答案为 dp[n][neg]。
+// 定义二维数组 dp，其中 dp[i][j] 表示在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j
+// 的方案数。假设数组 nums 的长度为 n，则最终答案为 dp[n][neg]。
 
 // 当没有任何元素可以选取时，元素和只能是 0，对应的方案数是 1，因此动态规划的边界条件是：
 
-// 当 1≤i≤n 时，对于数组 nums 中的第 i 个元素 num（i 的计数从 11 开始），遍历 0≤j≤neg，计算 dp[i][j] 的值：
+// 当 1≤i≤n 时，对于数组 nums 中的第 i 个元素 num（i 的计数从 11 开始），遍历 0≤j≤neg，计算 dp[i][j]
+// 的值：
 
 // 如果 j < num，则不能选 num，此时有 dp[i][j]=dp[i−1][j]；
 // 如果 j ≥ num，则
 // 如果不选 num，方案数是 dp[i−1][j]
 // 如果选num，方案数是 dp[i−1][j−num]，
 // 此时有 dp[i][j]=dp[i−1][j]+dp[i−1][j−num]。
-
 
 // 01背包问题详解 https://leetcode.cn/circle/article/lUki6J/
 class Solution {
@@ -55,14 +55,14 @@ class Solution {
       return 0;
     }
     int n = nums.size();
-    int neg = diff / 2;
+    int neg = diff / 2;  // neg是背包最大容量
     /* 定义dp数组 */
     vector<vector<int>> dp(n + 1, vector<int>(neg + 1));
     /* dp数组初始化 */
     dp[0][0] = 1;
     /* 遍历 */
     for (int i = 1; i <= n; i++) {      // 先遍历物品
-      for (int j = 0; j <= neg; j++) {  // 在遍历背包容量
+      for (int j = 0; j <= neg; j++) {  // 再遍历背包容量
         dp[i][j] = dp[i - 1][j];
         /* 如果背包剩余j的容量大于放的物品nums[i-1]则就可以将物品nums[i-1]放入背包中 */
         if (j >= nums[i - 1]) {
