@@ -68,6 +68,12 @@ Unique Binary Search Trees II
 
 977.有序数组的平方
 343.整数拆分
+547.省份数量
+
+Additive Number
+
+
+KMP
 ## 需要再熟悉的
 Decode Ways
 Range Sum Query - Mutable 线段树/树状数组，+1

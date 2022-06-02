@@ -44,7 +44,7 @@ class Solution {
         pre = pre->next;
       } else {
         // pre->next指向cur的下一个位置（相当于跳过了当前的重复元素）
-        // 但是pre不移动，仍然指向已经遍历的链表结尾,因为后面cur可能依然重复
+        // 但是pre不移动，pre->next仍然指向已经遍历的链表结尾,因为后面cur可能依然重复
         pre->next = cur->next;
       }
       ListNode* tmp = cur;

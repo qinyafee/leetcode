@@ -1,5 +1,12 @@
 // https://leetcode-cn.com/problems/number-of-islands/solution/dao-yu-lei-wen-ti-de-tong-yong-jie-fa-dfs-bian-li-/
 
+/// 1254. 统计封闭岛屿的数目 [related: 130. 被围绕的区域]
+/// 200. Number of Islands 岛屿数量, https://leetcode-cn.com/problems/number-of-islands
+/// 695.岛屿的最大面积, https://leetcode-cn.com/problems/max-area-of-island/
+// 463. 岛屿的周长, https://leetcode-cn.com/problems/island-perimeter/
+/// 827.【Hard】 最大人工岛https://leetcode-cn.com/problems/making-a-large-island/
+
+
 // 1254. 统计封闭岛屿的数目 [related: 130. 被围绕的区域]
 // dfs如果遇到边界返回false，否则返回true。
 class Solution {
@@ -38,7 +45,7 @@ class Solution {
   };
 };
 
-/// 200. 岛屿数量, https://leetcode-cn.com/problems/number-of-islands
+/// 200. Number of Islands 岛屿数量, https://leetcode-cn.com/problems/number-of-islands
 
 class Solution {
  public:
