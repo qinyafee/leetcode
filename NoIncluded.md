@@ -58,7 +58,6 @@ Candy
 ## 没刷的M
 H-Index II
 Best Time to Buy and Sell Stock with Cooldown
-Range Sum Query - Mmutable
 Binary Search Tree Iterator
 Construct Binary Tree from Preorder and Inorder Traversal
 Construct Binary Tree from Inorder and Postorder Traversal
@@ -78,7 +77,6 @@ KMP
 Decode Ways
 Range Sum Query - Mutable 线段树/树状数组，+1
 Insertion Sort List
-Single Number II
 
 ## 易错题
 Minimum Depth of Binary Tree

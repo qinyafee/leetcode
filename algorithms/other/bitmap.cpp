@@ -1,9 +1,8 @@
 // 给40亿个不重复的无符号整数，没排过序。给一个无符号整数，如何快 速判断一个数是否在这40亿个数中。
 // https://blog.csdn.net/archyli/article/details/78573362
 // 【腾讯】
-// 一个整数是4个字节，40亿个整数就是160亿个字节，也就相当于16G内存，就一般的计算机而言很难实现这个加载，所以我们可以采取以下两种方案，一种是分割，一种是位图。
 
-// 方法：
+// 分析：一个整数是4个字节(uint32_t)，40亿个整数就是160亿个字节，也就相当于16G内存，就一般的计算机而言很难实现这个加载
 // ①分割，hash求余
 // 采用分割处理，把40亿个数分批次处理完毕，当然可以实现我们最终的目标，但是这样做时间复杂度未免优点太高。
 // ②位图BitMap
@@ -18,7 +17,6 @@ using namespace std;
 class BitMap {
  public:
   BitMap(size_t range) {
-    //此时多开辟一个空间
     _bits.resize(range / 32 + 1);  // 申请的位图大小， 4E9/32+1 = 119MB
   }
   void Set(size_t x) {
@@ -50,7 +48,7 @@ void TestBitMap() {
 
   bm.Set(136);
   bm.Set(1);
-  bm.Set(static_cast<uint32_t>(-1));//如果是有符号数，先转换成无符号
+  bm.Set(static_cast<uint32_t>(-1));  //如果是有符号数，先转换成无符号
   cout << bm.Test(136) << endl;
   bm.Reset(136);
   cout << bm.Test(136) << endl;

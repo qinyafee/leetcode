@@ -35,8 +35,9 @@ class CBTInserter {
         node = node->left;
       }
     }
+    // 处理循环的最后一次,bits=0
     if (idx & 1) {
-      node->right = new TreeNode(val);
+      node->right = new TreeNode(val);  // 此时node是上一层最后一个元素
     } else {
       node->left = new TreeNode(val);
     }
@@ -92,5 +93,3 @@ class CBTInserter {
 };
 
 // Source : https://leetcode.com/problems/count-complete-tree-nodes/
-
-

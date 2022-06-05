@@ -35,10 +35,10 @@ class Solution {
   // 其中最高位是 1，其余各位从高到低表示从根节点到第 k 个节点的路径，
   // 0 表示移动到左子节点，1表示移动到右子节点。
   bool exists(TreeNode* root, int level, int k) {
-    int bits = 1 << (level - 1);  // 从第l-1位开始找，对应第l=1层
+    int bits = 1 << (level - 1);  // 从第l-1位开始找，对应第1层
     TreeNode* p = root;
     while (p != nullptr && bits > 0) {
-      if (!(bits & k)) {
+      if (!(bits & k)) { // 遍历k中的某一位=0
         p = p->left;
       } else {
         p = p->right;
