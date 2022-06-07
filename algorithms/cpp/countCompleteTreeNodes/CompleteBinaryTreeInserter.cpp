@@ -1,6 +1,6 @@
-// 222.
+// 222. Count Complete Tree Nodes
 // https://leetcode.cn/problems/count-complete-tree-nodes/solution/wan-quan-er-cha-shu-de-jie-dian-ge-shu-by-leetco-2/
-// 规定根节点位于第 0 层
+// 规定根节点位于第 0 层，根节点编号=1
 // 最大层数为 h 的完全二叉树，节点个数一定在 [2^h,2^(h+1)−1]的范围内,
 // 在该范围内通过二分查找,得到完全二叉树的节点个数
 
