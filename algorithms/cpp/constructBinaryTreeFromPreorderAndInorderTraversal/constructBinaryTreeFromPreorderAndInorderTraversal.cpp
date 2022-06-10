@@ -1,6 +1,7 @@
 // 递归
 // 保证元素无重复
 // 前序遍历中的第一个节点就是根节点
+// 无论前序/中序，左/右子树节点相等
 //链接：https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/cong-qian-xu-yu-zhong-xu-bian-li-xu-lie-gou-zao-9/
 // time O(n), space O(n)
 class Solution {
