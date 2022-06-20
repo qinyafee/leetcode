@@ -16,14 +16,18 @@
  *
  **********************************************************************************/
 
-/** 我的实现
-考察非递归的中序遍历。 这道题本质上是写一个二叉树的中序遍历的迭代器。
-内部设置一个栈， 初始化的时候， 存储从根节点到最左叶子节点的路径。
-在遍历的过程中， 每次从栈中弹出一个元素， 作为当前的返回结果，
-同时探测一下当前节点是否存在右孩子， 如果有， 则进入右孩子，
-并把从该右孩子到最左叶子节点的所有节点入栈。
-*/
+// 我的实现
+// 考察非递归的中序遍历, 本质上是写一个二叉树的中序遍历的迭代器。
+// 初始化：内部设置一个栈，存储从根节点到最左叶子节点的路径，栈顶是第一个next()
+
+// next():
+// 在遍历的过程中，每次从栈中弹出一个元素，作为当前的返回结果;
+// 同时检测当前节点是否存在右孩子(该节点可能不是next)。
+// 如果有，则进入右孩子，并把从该右孩子到最左叶子节点(该节点才是next)的所有节点入栈。
+
 class BSTIterator {
+  stack<TreeNode*> stk;
+
  public:
   BSTIterator(TreeNode* root) {
     while (root) {
@@ -31,12 +35,11 @@ class BSTIterator {
       root = root->left;
     }
   }
-  stack<TreeNode*> stk;
   /** @return the next smallest number */
   int next() {
-    TreeNode* tmp = stk.top();
+    TreeNode* tmp = stk.top();  //当前返回值
     stk.pop();
-    TreeNode* p = tmp->right;
+    TreeNode* p = tmp->right;  //不一定是下一个next
     while (p) {
       stk.push(p);
       p = p->left;

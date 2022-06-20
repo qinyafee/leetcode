@@ -2,230 +2,263 @@
 // Author : Hao Chen
 // Date   : 2014-07-22
 
-/********************************************************************************** 
-* 
-* Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? 
-* Find all unique triplets in the array which gives the sum of zero.
-* 
-* Note:
-* 
-* Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)
-* The solution set must not contain duplicate triplets.
-* 
-*     For example, given array S = {-1 0 1 2 -1 -4},
-* 
-*     A solution set is:
-*     (-1, 0, 1)
-*     (-1, -1, 2)
-* 
-*               
-**********************************************************************************/
+/**********************************************************************************
+ *
+ * Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0?
+ * Find all unique triplets in the array which gives the sum of zero.
+ *
+ * Note:
+ *
+ * Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)
+ * The solution set must not contain duplicate triplets.
+ *
+ *     For example, given array S = {-1 0 1 2 -1 -4},
+ *
+ *     A solution set is:
+ *     (-1, 0, 1)
+ *     (-1, -1, 2)
+ *
+ *
+ **********************************************************************************/
 // my implm
 
-// 先排序，然后左右夹逼，复杂度 O(n^2)。
-// 这个方法可以推广到 k-sum ， 先排序， 然后做 k-2 次循环， 在最内层循环左右夹逼， 时间复杂度是 O(max{nlog n, n^(k-1) })。
-// 本题的难点在于如何去除重复解。
-//https://leetcode-cn.com/problems/3sum/solution/pai-xu-shuang-zhi-zhen-zhu-xing-jie-shi-python3-by/
+// 先排序，然后左右夹逼，复杂度 O(n^2)。本题的难点在于如何去除重复解。
+// 这个方法可以推广到 k-sum ， 先排序， 然后做 k-2 次循环， 在最内层循环左右夹逼， 时间复杂度是
+// O(max{nlog n, n^(k-1) })。
+// https://leetcode-cn.com/problems/3sum/solution/pai-xu-shuang-zhi-zhen-zhu-xing-jie-shi-python3-by/
 
+// version1 数组index版本
+// time：O(n^2)。排序O(n*logn)
 class Solution {
-public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-        const int n = nums.size();
-        vector<vector<int>> res;
-        if(n < 3) return res;
-        sort(nums.begin(), nums.end());
-        auto last = nums.end();
-        for(auto i = nums.begin(); i < last-2; ++i){
-            if(*i>0) return res; //已排序，后面不会有解
-            if(i> nums.begin() && *i == *(i-1)) continue; //去重复
-            auto left = i+1;
-            auto right = last-1;
-            while(left < right){
-                if(*i + *left + *right == 0){
-                    res.push_back({*i, *left, *right});
-                    ++left; //找下一个解
-                    --right; //找下一个解
-                    while(*left == *(left-1) && left < right) ++left;//去重复
-                    while(*right == *(right+1) && left < right) --right;//去重复
-
-                }
-                else if(*i + *left + *right < 0){
-                    ++left;
-                    // while(*left == *(left+1) && left < right) ++left;//去重复
-                }
-                else{
-                    --right;
-                    // while(*right == *(right-1) && left < right) --right;//去重复
-                }
-            }
-        }
-        return res;
+ public:
+  vector<vector<int>> threeSum(vector<int>& nums) {
+    const int n = nums.size();
+    vector<vector<int>> res;
+    if (n < 3) {
+      return res;
     }
+    sort(nums.begin(), nums.end());
+
+    for (int i = 0; i < n - 2; ++i) {
+      if (nums[i] > 0) {  //已排序，后面不会有解
+        return res;
+      }
+      if (i > 0 && nums[i] == nums[i-1]) {  // 去重复
+        continue;
+      }
+      auto left = i + 1;
+      auto right = n - 1;
+      while (left < right) {
+        if (nums[i] + nums[left] + nums[right] == 0) {
+          res.push_back({nums[i], nums[left], nums[right]});
+          ++left;                                                  //找下一个解
+          --right;                                                 //找下一个解
+          while (nums[left] == nums[left-1] && left < right) ++left;     //去重复
+          while (nums[right] == nums[right + 1] && left < right) --right;  //去重复
+
+        } else if (nums[i] + nums[left] + nums[right] < 0) {
+          ++left;
+          // while(*left == *(left+1) && left < right) ++left;//去重复
+        } else {
+          --right;
+          // while(*right == *(right-1) && left < right) --right;//去重复
+        }
+      }
+    }
+    return res;
+  }
+};
+
+// version2 迭代器版本
+class Solution {
+ public:
+  vector<vector<int>> threeSum(vector<int>& nums) {
+    const int n = nums.size();
+    vector<vector<int>> res;
+    if (n < 3) return res;
+    sort(nums.begin(), nums.end());
+    auto last = nums.end();
+    for (auto i = nums.begin(); i < last - 2; ++i) {
+      if (*i > 0) return res;                            //已排序，后面不会有解
+      if (i > nums.begin() && *i == *(i - 1)) continue;  //去重复
+      auto left = i + 1;
+      auto right = last - 1;
+      while (left < right) {
+        if (*i + *left + *right == 0) {
+          res.push_back({*i, *left, *right});
+          ++left;                                                  //找下一个解
+          --right;                                                 //找下一个解
+          while (*left == *(left - 1) && left < right) ++left;     //去重复
+          while (*right == *(right + 1) && left < right) --right;  //去重复
+
+        } else if (*i + *left + *right < 0) {
+          ++left;
+          // while(*left == *(left+1) && left < right) ++left;//去重复
+        } else {
+          --right;
+          // while(*right == *(right-1) && left < right) --right;//去重复
+        }
+      }
+    }
+    return res;
+  }
 };
 
 #include <stdio.h>
-#include <iostream>
-#include <vector>
-#include <set>
 #include <algorithm>
+#include <iostream>
+#include <set>
+#include <vector>
 
 using namespace std;
-
 
 /*
  *   Similar like "Two Number" problem, we can have the simlar solution.
  *
- *   Suppose the input array is S[0..n-1], 3SUM can be solved in O(n^2) time on average by 
- *   inserting each number S[i] into a hash table, and then for each index i and j,  
+ *   Suppose the input array is S[0..n-1], 3SUM can be solved in O(n^2) time on average by
+ *   inserting each number S[i] into a hash table, and then for each index i and j,
  *   checking whether the hash table contains the integer - (s[i]+s[j])
  *
- *   Alternatively, the algorithm below first sorts the input array and then tests all 
- *   possible pairs in a careful order that avoids the need to binary search for the pairs 
+ *   Alternatively, the algorithm below first sorts the input array and then tests all
+ *   possible pairs in a careful order that avoids the need to binary search for the pairs
  *   in the sorted list, achieving worst-case O(n^n)
  *
  *   Solution:  Quadratic algorithm
  *   http://en.wikipedia.org/wiki/3SUM
  *
  */
-vector<vector<int> > threeSum(vector<int> &num) {
+vector<vector<int>> threeSum(vector<int>& num) {
+  vector<vector<int>> result;
+  if (num.size() == 0 || num.size() == 1 || num.size() == 2) return result;
 
-    vector< vector<int> > result;
-    if(num.size() == 0 || num.size() == 1 || num.size() == 2) return result;
+  // sort the array, this is the key
+  sort(num.begin(), num.end());
 
-    //sort the array, this is the key
-    sort(num.begin(), num.end());
+  int n = num.size();
 
-    int n = num.size();
-
-    for (int i=0; i<n-2; i++) {
-        //skip the duplication
-        if (i > 0 && num[i - 1] == num[i]) continue;
-        int a = num[i];
-        int low = i + 1;
-        int high = n - 1;
-        while (low < high) {
-            int b = num[low];
-            int c = num[high];
-            if (a + b + c == 0) {
-                //got the soultion
-                vector<int> v;
-                v.push_back(a);
-                v.push_back(b);
-                v.push_back(c);
-                result.push_back(v);
-                // Continue search for all triplet combinations summing to zero.
-                //skip the duplication
-                while(low < n - 1 && num[low] == num[low + 1]) low++; 
-                while(high > 0 && num[high] == num[high - 1]) high--; 
-                low++;
-                high--;
-            } else if (a+b+c > 0) {
-                //skip the duplication
-                while(high > 0 && num[high] == num[high - 1]) high--;
-                high--;
-            } else {
-                //skip the duplication
-                while(low < n - 1 && num[low] == num[low + 1]) low++;
-                low++;
-            } 
-        }
+  for (int i = 0; i < n - 2; i++) {
+    // skip the duplication
+    if (i > 0 && num[i - 1] == num[i]) continue;
+    int a = num[i];
+    int low = i + 1;
+    int high = n - 1;
+    while (low < high) {
+      int b = num[low];
+      int c = num[high];
+      if (a + b + c == 0) {
+        // got the soultion
+        vector<int> v;
+        v.push_back(a);
+        v.push_back(b);
+        v.push_back(c);
+        result.push_back(v);
+        // Continue search for all triplet combinations summing to zero.
+        // skip the duplication
+        while (low < n - 1 && num[low] == num[low + 1]) low++;
+        while (high > 0 && num[high] == num[high - 1]) high--;
+        low++;
+        high--;
+      } else if (a + b + c > 0) {
+        // skip the duplication
+        while (high > 0 && num[high] == num[high - 1]) high--;
+        high--;
+      } else {
+        // skip the duplication
+        while (low < n - 1 && num[low] == num[low + 1]) low++;
+        low++;
+      }
     }
-    return result;
+  }
+  return result;
 }
 
-//using combination method could meet <<Time Limit Exceeded>> error
-vector<vector<int> > combination(vector<int> &v, int k);
+// using combination method could meet <<Time Limit Exceeded>> error
+vector<vector<int>> combination(vector<int>& v, int k);
 bool isSumZero(vector<int>& v);
 int sum(vector<int>& v);
 
-vector<vector<int> > threeSum2(vector<int> &num) {
-    vector< vector<int> > result;
-    vector< vector<int> > r = combination(num, 3);
-    for (int i = 0; i < r.size(); i++) {
-        if (isSumZero(r[i])) {
-            result.push_back(r[i]);
-        }
+vector<vector<int>> threeSum2(vector<int>& num) {
+  vector<vector<int>> result;
+  vector<vector<int>> r = combination(num, 3);
+  for (int i = 0; i < r.size(); i++) {
+    if (isSumZero(r[i])) {
+      result.push_back(r[i]);
     }
-    return result;
+  }
+  return result;
 }
 
-bool isSumZero(vector < int>& v) {
-    return sum(v) == 0;
+bool isSumZero(vector<int>& v) {
+  return sum(v) == 0;
 }
 
 int sum(vector<int>& v) {
-    int s = 0;
-    for(int i = 0; i < v.size(); i++) {
-        s += v[i];
-    }
-    return s;
+  int s = 0;
+  for (int i = 0; i < v.size(); i++) {
+    s += v[i];
+  }
+  return s;
 }
 
-vector<vector<int> > combination(vector<int> &v, int k) {
+vector<vector<int>> combination(vector<int>& v, int k) {
+  vector<vector<int>> result;
+  vector<int> d;
+  int n = v.size();
+  for (int i = 0; i < n; i++) {
+    d.push_back((i < k) ? 1 : 0);
+  }
 
-    vector<vector<int> > result;
-    vector<int> d;
-    int n = v.size();
-    for (int i = 0; i < n; i++) {
-        d.push_back( (i < k) ? 1 : 0 );
+  // 1) from the left, find the [1,0] pattern, change it to [0,1]
+  // 2) move all of the 1 before the pattern to the most left side
+  // 3) check all of 1 move to the right
+  while (1) {
+    vector<int> tmp;
+    for (int x = 0; x < n; x++) {
+      if (d[x]) tmp.push_back(v[x]);
     }
-
-    //1) from the left, find the [1,0] pattern, change it to [0,1]
-    //2) move all of the 1 before the pattern to the most left side
-    //3) check all of 1 move to the right
-    while(1) {
-        vector<int> tmp;
-        for(int x = 0; x < n; x++) {
-            if (d[x]) tmp.push_back(v[x]);
+    sort(tmp.begin(), tmp.end());
+    result.push_back(tmp);
+    // step 1), find [1,0] pattern
+    int i;
+    bool found = false;
+    int ones = 0;
+    for (i = 0; i < n - 1; i++) {
+      if (d[i] == 1 && d[i + 1] == 0) {
+        d[i] = 0;
+        d[i + 1] = 1;
+        found = true;
+        // step 2) move all of right 1 to the most left side
+        for (int j = 0; j < i; j++) {
+          d[j] = (ones > 0) ? 1 : 0;
+          ones--;
         }
-        sort(tmp.begin(), tmp.end());
-        result.push_back(tmp);
-        //step 1), find [1,0] pattern
-        int i;
-        bool found = false;
-        int ones = 0;
-        for(i = 0; i < n - 1; i++) {
-
-            if (d[i] == 1 && d[i + 1] == 0) {
-                d[i] = 0; d[i + 1] = 1;
-                found = true;
-                //step 2) move all of right 1 to the most left side
-                for (int j = 0; j < i; j++) {
-                    d[j] = ( ones > 0 ) ? 1 : 0;
-                    ones--;
-                }
-                break;
-            }
-            if (d[i] == 1) ones++;
-        }
-        if (!found) {
-            break;
-        }
-
+        break;
+      }
+      if (d[i] == 1) ones++;
     }
-    return result;
+    if (!found) {
+      break;
+    }
+  }
+  return result;
 }
 
-
-void printMatrix(vector<vector<int> > &matrix)
-{
-    for(int i = 0; i < matrix.size(); i++) {
-        printf("{");
-        for(int j = 0; j < matrix[i].size(); j++) {
-            printf("%3d ", matrix[i][j]) ;
-        }
-        printf("}\n");
+void printMatrix(vector<vector<int>>& matrix) {
+  for (int i = 0; i < matrix.size(); i++) {
+    printf("{");
+    for (int j = 0; j < matrix[i].size(); j++) {
+      printf("%3d ", matrix[i][j]);
     }
-    cout << endl;
+    printf("}\n");
+  }
+  cout << endl;
 }
 
-
-int main()
-{
-    //int a[] = { -1, 0, 1, 2, -1, 1, -4 };
-    int a[] = { -1, 1, 1, 1, -1, -1, 0,0,0 };
-    vector<int> n(a, a + sizeof(a)/sizeof(int));
-    vector< vector<int> > result = threeSum(n);
-    printMatrix(result);    
-    return 0;
+int main() {
+  // int a[] = { -1, 0, 1, 2, -1, 1, -4 };
+  int a[] = {-1, 1, 1, 1, -1, -1, 0, 0, 0};
+  vector<int> n(a, a + sizeof(a) / sizeof(int));
+  vector<vector<int>> result = threeSum(n);
+  printMatrix(result);
+  return 0;
 }
