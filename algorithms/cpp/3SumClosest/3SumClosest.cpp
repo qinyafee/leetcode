@@ -26,10 +26,10 @@ class Solution {
     const int n = nums.size();
     int res = 0;
     int min_gap = INT_MAX;
-    sort(nums.begin(), nums.end());                              //先排序
+    sort(nums.begin(), nums.end());    // 先排序
     for (int i = 0; i < n - 2; ++i) {  // i<倒数第二个
-      int left = i+1;
-      int right = n-1;
+      int left = i + 1;
+      int right = n - 1;
       while (left < right) {
         const int sum = nums[i] + nums[left] + nums[right];
         const int gap = abs(sum - target);
@@ -55,7 +55,7 @@ class Solution {
     // if(nums.size() < 3) return;
     int res = 0;
     int min_gap = INT_MAX;
-    sort(nums.begin(), nums.end());                              //先排序
+    sort(nums.begin(), nums.end());                              // 先排序
     for (auto i = nums.begin(); i < prev(nums.end(), 2); ++i) {  // i<倒数第二个
       auto left = next(i);
       auto right = prev(nums.end());
@@ -79,6 +79,7 @@ class Solution {
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <algorithm>
 #include <iostream>
 #include <set>

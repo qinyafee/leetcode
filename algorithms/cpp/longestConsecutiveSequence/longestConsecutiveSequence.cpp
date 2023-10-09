@@ -27,16 +27,16 @@ class Solution {
     for (auto i : nums) {
       my_set.insert(i);
     }
-    int longest = 0;  //注意初始化成0；
+    int longest = 0;  // 注意初始化成0；
     for (auto i : nums) {
       int length = 1;
-      //向左边扩张
+      // 向左边扩张
       for (int j = i - 1; my_set.find(j) != my_set.end(); --j) {
-        my_set.erase(j);  // 注意erase
+        my_set.erase(j);  //! 注意erase
         ++length;
       }
 
-      //向右边扩张
+      // 向右边扩张
       for (int j = i + 1; my_set.find(j) != my_set.end(); ++j) {
         my_set.erase(j);
         ++length;

@@ -2,37 +2,38 @@
 // Author : Hao Chen
 // Date   : 2014-07-19
 
-/********************************************************************************** 
-* 
-* Implement strStr().
-* 
-* Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.
-* 
-*               
-**********************************************************************************/
+/**********************************************************************************
+ *
+ * Implement strStr().
+ *
+ * Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of
+ *haystack.
+ *
+ *
+ **********************************************************************************/
+// my impl
+class Solution {
+ public:
+  int strStr(string haystack, string needle) {
+    int m = haystack.size();
+    int n = needle.size();
+    if (n == 0) return 0;
+    for (int i = 0; i < m - n + 1; ++i) {
+      int j = i;
+      int k = 0;
+      for (; k < n; ++j, ++k) {
+        if (haystack[j] != needle[k]) break;
+      }
+      if (k == n) return i;
+    }
+    return -1;
+  }
+};
 
+// clang-format off
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-// my impl
-class Solution {
-public:
-    int strStr(string haystack, string needle) {
-        int m = haystack.size();
-        int n = needle.size();
-        if(n==0) return 0;
-        for(int i = 0; i < m -n +1; ++i){
-            int j = i;
-            int k = 0;
-            for(; k < n; ++j, ++k){
-                if(haystack[j] != needle[k]) break;
-            }
-            if(k == n) return i;
-        }
-        return -1;
-    }
-};
 
 char *strStr1(char *haystack, char *needle);
 char *strStr2(char *haystack, char *needle);

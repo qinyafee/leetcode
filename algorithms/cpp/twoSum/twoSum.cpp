@@ -32,7 +32,7 @@ class Solution {
     }
     for (int i = 0; i < n; ++i) {
       auto it = mp.find(target - nums[i]);
-      if (it != mp.end() && it->second != i) {
+      if (it != mp.end() && it->second != i) {  //! 第二个条件容易忘
         res.push_back(i);
         res.push_back(it->second);
         break;

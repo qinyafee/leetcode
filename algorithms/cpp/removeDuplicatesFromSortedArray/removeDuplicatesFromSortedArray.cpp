@@ -24,7 +24,7 @@ class Solution {
     if (nums.empty()) {
       return 0;
     }
-    int i = 0;  //输出结果index
+    int i = 0;  // 输出结果index
     for (int j = 1; j < nums.size(); ++j) {
       if (nums[i] == nums[j]) {
         continue;

@@ -22,9 +22,9 @@
 // my implm
 class Solution {
  public:
-  // 时间复杂度O(n)， 空间复杂度O(1)
+  // 时间复杂度O(n)， 空间复杂度O(1)【不增加额外存储，best practice】
   bool isPalindrome(string s) {
-    transform(s.begin(), s.end(), s.begin(), ::tolower);  //字母全转成小写
+    transform(s.begin(), s.end(), s.begin(), ::tolower);  //! 字母全转成小写
     auto left = s.begin();
     auto right = std::prev(s.end());  // s最后一个元素
     while (left < right) {
@@ -45,9 +45,9 @@ class Solution {
   bool isPalindrome2(string s) {
     vector<char> vec;
     stack<char> stk;
-    transform(s.begin(), s.end(), s.begin(), ::tolower);  //字母全转成小写
+    transform(s.begin(), s.end(), s.begin(), ::tolower);  // 字母全转成小写
     for (char ch : s) {
-      if (std::isalnum(ch)) {  //是否为数字和字符
+      if (std::isalnum(ch)) {  // 是否为数字和字符
         vec.push_back(ch);
         stk.push(ch);
       }

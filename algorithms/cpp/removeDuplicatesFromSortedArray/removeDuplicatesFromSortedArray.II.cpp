@@ -2,42 +2,42 @@
 // Author : Hao Chen
 // Date   : 2014-06-29
 
-/********************************************************************************** 
-* 
-* Follow up for "Remove Duplicates":
-* What if duplicates are allowed at most twice?
-* 
-* For example,
-* Given sorted array A = [1,1,1,2,2,3],
-* 
-* Your function should return length = 5, and A is now [1,1,2,2,3].
-* 
-*               
-**********************************************************************************/
+/**********************************************************************************
+ *
+ * Follow up for "Remove Duplicates":
+ * What if duplicates are allowed at most twice?
+ *
+ * For example,
+ * Given sorted array A = [1,1,1,2,2,3],
+ *
+ * Your function should return length = 5, and A is now [1,1,2,2,3].
+ *
+ *
+ **********************************************************************************/
 // my implm
 
 class Solution {
-public:
-    // Time complexity: O(n), Space Complexity: O(1)
-    int removeDuplicates(vector<int>& nums) {
-        if (nums.size() <= 2) return nums.size();
-        int i = 0; // 输出结果index
-        int k = 0; // 重复个数
-        const int times = 2;
-        for(int j = 1; j < nums.size(); ++j){
-            if(nums[i] == nums[j]){
-                ++k;
-                if(k>1) continue; //可以有一次重复
-                nums[++i] = nums[j];
-            }
-            else{
-                k = 0;
-                nums[++i] = nums[j];
-            }
-        }
-        return i+1;
+ public:
+  // Time complexity: O(n), Space Complexity: O(1)
+  int removeDuplicates(vector<int>& nums) {
+    if (nums.size() <= 2) return nums.size();
+    int i = 0;  // 输出结果index
+    int k = 0;  // 重复个数
+    for (int j = 1; j < nums.size(); ++j) {
+      if (nums[i] == nums[j]) {
+        ++k;
+        if (k > 1) continue;  // 可以有一次重复
+        nums[++i] = nums[j];
+      } else {
+        k = 0;
+        nums[++i] = nums[j];
+      }
     }
+    return i + 1;
+  }
 };
+
+// clang-format off
 #include <stdio.h>
 int removeDuplicates(int A[], int n) {
     if (n<=2) return n;

@@ -2,13 +2,13 @@
 // Author : Hao Chen
 // Date   : 2014-07-17
 
-/********************************************************************************** 
-* 
-* Given a string S, find the longest palindromic substring in S. 
-* You may assume that the maximum length of S is 1000, 
-* and there exists one unique longest palindromic substring.
-*               
-**********************************************************************************/
+/**********************************************************************************
+ *
+ * Given a string S, find the longest palindromic substring in S.
+ * You may assume that the maximum length of S is 1000,
+ * and there exists one unique longest palindromic substring.
+ *
+ **********************************************************************************/
 // my implm
 // 动规，时间复杂度O(n^2)， 空间复杂度O(n^2)
 // 设状态为 f(i,j) ， 表示区间[i,j]是否为回文串， 则状态转移方程为
@@ -16,37 +16,37 @@
 // 2. f[i][j] = (s[i]==s[j]), j=i+1;
 // 3. f[i][j] = (s[i]==s[j] && f[i+1][j-1]), j>i+1;
 class Solution {
-public:
-    string longestPalindrome(string s) {
-        const int n = s.size();
-        if(n==0) return "";
-        // 用 vector 会超时
-        // vector <vector<bool>> f(n, vector(n, false));
-        bool f[n][n];
-        fill_n(&f[0][0], n*n, false); //注意填充方式
-        int maxLen = 1;// 最长回文子串的长度， 起点
-        int start = 0;
-        for(int j = 0; j < n; ++j){
-            f[j][j] = true; //case1
-            for(int i = 0; i < j; ++i) {//区间[i,j]
-                // if((j == (i+1)) && s[i]==s[j]) //case2
-                //     f[i][j] = true;
-                // if((j > (i+1)) && f[i+1][j-1] && s[i]==s[j])//case3
-                //     f[i][j] = true;
-                // case2 + case3，可换成下面一行
-                f[i][j] = (s[i] == s[j] && (j - i < 2 || f[i + 1][j - 1]));
+ public:
+  string longestPalindrome(string s) {
+    const int n = s.size();
+    if (n == 0) return "";
+    // 用 vector 会超时
+    // vector <vector<bool>> f(n, vector(n, false));
+    bool f[n][n];
+    fill_n(&f[0][0], n * n, false);  // 注意填充方式
+    int maxLen = 1;                  // 最长回文子串的长度， 起点
+    int start = 0;
+    for (int j = 0; j < n; ++j) {
+      f[j][j] = true;                // case1
+      for (int i = 0; i < j; ++i) {  // 区间[i,j]
+        // if((j == (i+1)) && s[i]==s[j]) //case2
+        //     f[i][j] = true;
+        // if((j > (i+1)) && f[i+1][j-1] && s[i]==s[j])//case3
+        //     f[i][j] = true;
+        // case2 + case3，可换成下面一行
+        f[i][j] = (s[i] == s[j] && (j - i < 2 || f[i + 1][j - 1]));
 
-                if(f[i][j] && maxLen < (j-i+1)){
-                    start = i;
-                    maxLen = j-i+1;
-                }
-            }
+        if (f[i][j] && maxLen < (j - i + 1)) {
+          start = i;
+          maxLen = j - i + 1;
         }
-        return s.substr(start, maxLen);
+      }
     }
+    return s.substr(start, maxLen);
+  }
 };
 
-
+// clang-format off
 #include <string.h>
 #include <iostream>
 #include <string>

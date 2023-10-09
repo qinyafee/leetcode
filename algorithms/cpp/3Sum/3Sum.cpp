@@ -40,10 +40,10 @@ class Solution {
     sort(nums.begin(), nums.end());
 
     for (int i = 0; i < n - 2; ++i) {
-      if (nums[i] > 0) {  //已排序，后面不会有解
+      if (nums[i] > 0) {  // 已排序，后面不会有解
         return res;
       }
-      if (i > 0 && nums[i] == nums[i-1]) {  // 去重复
+      if (i > 0 && nums[i] == nums[i - 1]) {  //! 去重复
         continue;
       }
       auto left = i + 1;
@@ -51,10 +51,10 @@ class Solution {
       while (left < right) {
         if (nums[i] + nums[left] + nums[right] == 0) {
           res.push_back({nums[i], nums[left], nums[right]});
-          ++left;                                                  //找下一个解
-          --right;                                                 //找下一个解
-          while (nums[left] == nums[left-1] && left < right) ++left;     //去重复
-          while (nums[right] == nums[right + 1] && left < right) --right;  //去重复
+          ++left;                                                          //! 找下一个解
+          --right;                                                         //! 找下一个解
+          while (nums[left] == nums[left - 1] && left < right) ++left;     // 去重复
+          while (nums[right] == nums[right + 1] && left < right) --right;  // 去重复
 
         } else if (nums[i] + nums[left] + nums[right] < 0) {
           ++left;
@@ -79,17 +79,17 @@ class Solution {
     sort(nums.begin(), nums.end());
     auto last = nums.end();
     for (auto i = nums.begin(); i < last - 2; ++i) {
-      if (*i > 0) return res;                            //已排序，后面不会有解
-      if (i > nums.begin() && *i == *(i - 1)) continue;  //去重复
+      if (*i > 0) return res;                            // 已排序，后面不会有解
+      if (i > nums.begin() && *i == *(i - 1)) continue;  // 去重复
       auto left = i + 1;
       auto right = last - 1;
       while (left < right) {
         if (*i + *left + *right == 0) {
           res.push_back({*i, *left, *right});
-          ++left;                                                  //找下一个解
-          --right;                                                 //找下一个解
-          while (*left == *(left - 1) && left < right) ++left;     //去重复
-          while (*right == *(right + 1) && left < right) --right;  //去重复
+          ++left;                                                  // 找下一个解
+          --right;                                                 // 找下一个解
+          while (*left == *(left - 1) && left < right) ++left;     // 去重复
+          while (*right == *(right + 1) && left < right) --right;  // 去重复
 
         } else if (*i + *left + *right < 0) {
           ++left;
@@ -105,6 +105,7 @@ class Solution {
 };
 
 #include <stdio.h>
+
 #include <algorithm>
 #include <iostream>
 #include <set>
