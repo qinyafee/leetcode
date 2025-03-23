@@ -29,15 +29,15 @@
 #include <vector>
 using namespace std;
 
-// 设状态为 f(i, j) ， 表示从从位置 (i,j) 出发， 路径的最小和， 则状态转移方程为
-// f(i, j) = min f(i + 1, j), f(i + 1, j + 1) + (i, j)
-// 这里考虑从下到上的方式，状态的定义就变成了 “最后一行元素到当前元素的最小路径和”，
-// 对于 [0][0]这个元素来说，最后状态表示的就是我们的最终答案。
+// 状态定义：设状态为 f(i, j)， 最后一行元素到当前元素(i,j)的最小路径和
+// 状态转移：f(i, j) = min (f(i + 1, j), f(i + 1, j + 1)) + a(i, j)
+// 初始化：最后一行 f(n-1, j) = a(n-1, j)
+// 结束条件：对于 [0][0]这个元素来说，最后状态表示的就是我们的最终答案。
 
 class Solution {
  public:
   // my impl 1
-  // space O(1)
+  // space O(1), time O(n^2)
   int minimumTotal(vector<vector<int>>& triangle) {
     int n = triangle.size();
     for (int i = n - 2; i >= 0; --i) {
